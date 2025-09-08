@@ -1,6 +1,6 @@
 import * as ApplyRender from '../ApplyRender/ApplyRender.ts'
-import * as ColorPickerStates from '../HoverStates/HoverStates.ts'
 import * as Diff from '../Diff/Diff.ts'
+import * as ColorPickerStates from '../HoverStates/HoverStates.ts'
 
 export const doRender = (uid: number): readonly any[] => {
   const { oldState, newState } = ColorPickerStates.get(uid)

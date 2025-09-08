@@ -1,6 +1,6 @@
 import { expect, test } from '@jest/globals'
-import * as FindWidgetStates from '../src/parts/HoverStates/HoverStates.ts'
 import { create } from '../src/parts/Create/Create.ts'
+import * as FindWidgetStates from '../src/parts/HoverStates/HoverStates.ts'
 
 test('create - creates and sets completion state', () => {
   const uid = 1
