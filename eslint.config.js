@@ -7,6 +7,7 @@ export default [
       '@typescript-eslint/prefer-readonly-parameter-types': 'off',
       '@typescript-eslint/explicit-function-return-type': 'off',
       'no-restricted-syntax': 'off',
+      '@typescript-eslint/no-floating-promises': 'off',
     },
   },
 ]
