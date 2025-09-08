@@ -6,6 +6,7 @@ export default [
     rules: {
       '@typescript-eslint/prefer-readonly-parameter-types': 'off',
       '@typescript-eslint/explicit-function-return-type': 'off',
+      'no-restricted-syntax': 'off',
     },
   },
 ]
