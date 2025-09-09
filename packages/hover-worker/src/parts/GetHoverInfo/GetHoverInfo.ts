@@ -1,22 +1,11 @@
 import * as Assert from '../Assert/Assert.ts'
 import * as GetWordAt from '../EditorCommand/EditorCommandGetWordAt.ts'
 import * as EditorPosition from '../EditorCommand/EditorCommandPosition.ts'
+import { getOffsetAtCursor } from '../GetOffsetAtCursor/GetOffsetAtCursor.ts'
+import { getPositionAtCursor } from '../GetPositionAtCursor/GetPositionAtCursor.ts'
 import * as Hover from '../Hover/Hover.ts'
 import * as MeasureTextHeight from '../MeasureTextHeight/MeasureTextHeight.ts'
-import * as TextDocument from '../TextDocument/TextDocument.ts'
 import * as TokenizeCodeBlock from '../TokenizeCodeBlock/TokenizeCodeBlock.ts'
-
-const getHoverPosition = (position: any, selections: any) => {
-  if (position) {
-    return position
-  }
-  const rowIndex = selections[0]
-  const columnIndex = selections[1]
-  return {
-    rowIndex,
-    columnIndex,
-  }
-}
 
 const getMatchingDiagnostics = (diagnostics: any, rowIndex: number, columnIndex: number) => {
   const matching: any[] = []
@@ -49,13 +38,11 @@ const getHoverPositionXy = (editor: any, rowIndex: number, wordStart: any, docum
   }
 }
 
-export const getEditorHoverInfo = async (editorUid: number, position: any) => {
+export const getEditorHoverInfo = async (editorUid: number, editorLanguageId: string, position: any) => {
   Assert.number(editorUid)
-  const editor = {}
-  const { selections } = { selections: [] }
-  const { rowIndex, columnIndex } = getHoverPosition(position, selections)
-  const offset = TextDocument.offsetAt(editor, rowIndex, columnIndex)
-  const hover = await Hover.getHover(editor, offset)
+  const { rowIndex, columnIndex } = await getPositionAtCursor(editorUid)
+  const offset = getOffsetAtCursor(editorUid)
+  const hover = await Hover.getHover(editorUid, editorLanguageId, offset)
   if (!hover) {
     return undefined
   }
@@ -76,6 +63,8 @@ export const getEditorHoverInfo = async (editorUid: number, position: any) => {
     hoverDocumentationLineHeight,
     hoverDocumentationWidth,
   )
+  // TODO
+  const editor = {}
   const { x, y } = getHoverPositionXy(editor, rowIndex, wordStart, documentationHeight)
   // @ts-ignore
   const diagnostics = editor.diagnostics || []
