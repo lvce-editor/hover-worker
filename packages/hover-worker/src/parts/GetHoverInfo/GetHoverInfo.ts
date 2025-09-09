@@ -17,18 +17,6 @@ const getMatchingDiagnostics = (diagnostics: any, rowIndex: number, columnIndex:
   return matching
 }
 
-const fallbackDisplayStringLanguageId = 'typescript' // TODO remove this
-
-const hoverDocumentationFontSize = 15
-const hoverDocumentationFontFamily = 'Fira Code'
-const hoverDocumentationLineHeight = '1.33333'
-const hoverBorderLeft = 1
-const hoverBorderRight = 1
-const hoverPaddingLeft = 8
-const hoverPaddingRight = 8
-const hovverFullWidth = 400
-const hoverDocumentationWidth = hovverFullWidth - hoverPaddingLeft - hoverPaddingRight - hoverBorderLeft - hoverBorderRight
-
 const getHoverPositionXy = (editor: any, rowIndex: number, wordStart: any, documentationHeight: any) => {
   const x = EditorPosition.x(editor, rowIndex, wordStart)
   const y = editor.height - EditorPosition.y(editor, rowIndex) + editor.y + 40
@@ -38,7 +26,19 @@ const getHoverPositionXy = (editor: any, rowIndex: number, wordStart: any, docum
   }
 }
 
-export const getEditorHoverInfo = async (editorUid: number, editorLanguageId: string, position: any) => {
+export const getEditorHoverInfo = async (
+  editorUid: number,
+  editorLanguageId: string,
+  hoverFullWidth: number,
+  hoverPaddingLeft: number,
+  hoverPaddingRight: number,
+  hoverBorderLeft: number,
+  hoverBorderRight: number,
+  hoverDocumentationFontFamily: string,
+  hoverDocumentationFontSize: number,
+  hoverDocumentationLineHeight: string,
+  fallbackDisplayStringLanguageId: string,
+) => {
   Assert.number(editorUid)
   const { rowIndex, columnIndex } = await getPositionAtCursor(editorUid)
   const offset = getOffsetAtCursor(editorUid)
@@ -47,6 +47,9 @@ export const getEditorHoverInfo = async (editorUid: number, editorLanguageId: st
     return undefined
   }
   const { displayString, documentation, displayStringLanguageId } = hover
+
+  const hoverDocumentationWidth = hoverFullWidth - hoverPaddingLeft - hoverPaddingRight - hoverBorderLeft - hoverBorderRight
+
   const tokenizerPath = ''
   const lineInfos = await TokenizeCodeBlock.tokenizeCodeBlock(
     displayString,

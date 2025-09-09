@@ -4,11 +4,35 @@ import * as GetPositionAtCursor from '../GetPositionAtCursor/GetPositionAtCursor
 import * as GetWordAtOffset from '../GetWordAtOffset/GetWordAtOffset.ts'
 
 export const loadContent = async (state: HoverState): Promise<HoverState> => {
-  const { editorUid, editorLanguageId } = state
+  const {
+    editorLanguageId,
+    editorUid,
+    fallbackDisplayStringLanguageId,
+    hoverBorderLeft,
+    hoverBorderRight,
+    hoverDocumentationFontFamily,
+    hoverDocumentationFontSize,
+    hoverDocumentationLineHeight,
+    hoverFullWidth,
+    hoverPaddingLeft,
+    hoverPaddingRight,
+  } = state
   const wordAtOffset = await GetWordAtOffset.getWordAtOffset(editorUid)
   const { x, y } = await GetPositionAtCursor.getPositionAtCursor(editorUid)
 
-  const info = await getEditorHoverInfo(editorUid, editorLanguageId, undefined)
+  const info = await getEditorHoverInfo(
+    editorUid,
+    editorLanguageId,
+    hoverFullWidth,
+    hoverPaddingLeft,
+    hoverPaddingRight,
+    hoverBorderLeft,
+    hoverBorderRight,
+    hoverDocumentationFontFamily,
+    hoverDocumentationFontSize,
+    hoverDocumentationLineHeight,
+    fallbackDisplayStringLanguageId,
+  )
   if (!info) {
     return {
       ...state,
