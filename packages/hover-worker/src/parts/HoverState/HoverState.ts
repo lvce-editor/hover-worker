@@ -10,4 +10,13 @@ export interface HoverState {
   readonly y: number
   readonly width: number
   readonly height: number
+  readonly fallbackDisplayStringLanguageId: string
+  readonly hoverDocumentationFontSize: number
+  readonly hoverDocumentationFontFamily: string
+  readonly hoverDocumentationLineHeight: string
+  readonly hoverBorderLeft: number
+  readonly hoverBorderRight: number
+  readonly hoverPaddingLeft: number
+  readonly hoverPaddingRight: number
+  readonly hovverFullWidth: number
 }
