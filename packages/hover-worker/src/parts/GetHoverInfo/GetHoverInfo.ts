@@ -1,5 +1,5 @@
+import { EditorWorker } from '@lvce-editor/rpc-registry'
 import * as Assert from '../Assert/Assert.ts'
-import * as GetWordAt from '../EditorCommand/EditorCommandGetWordAt.ts'
 import * as EditorPosition from '../EditorCommand/EditorCommandPosition.ts'
 import { getOffsetAtCursor } from '../GetOffsetAtCursor/GetOffsetAtCursor.ts'
 import { getPositionAtCursor } from '../GetPositionAtCursor/GetPositionAtCursor.ts'
@@ -53,8 +53,7 @@ export const getEditorHoverInfo = async (editorUid: number, editorLanguageId: st
     displayStringLanguageId || fallbackDisplayStringLanguageId,
     tokenizerPath,
   )
-  // @ts-ignore
-  const wordPart = GetWordAt.getWordBefore(editor, rowIndex, columnIndex)
+  const wordPart = await EditorWorker.getWordBefore(editorUid, rowIndex, columnIndex)
   const wordStart = columnIndex - wordPart.length
   const documentationHeight = await MeasureTextHeight.measureTextBlockHeight(
     documentation,
