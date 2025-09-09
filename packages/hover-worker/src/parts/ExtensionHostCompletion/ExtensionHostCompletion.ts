@@ -18,19 +18,3 @@ export const executeHoverProvider = async (editorUid: number, editorLanguageId: 
     combineResults,
   })
 }
-
-const combineResultsResolve = (items: any) => {
-  return items[0] ?? undefined
-}
-
-export const executeResolveHoverItem = async (editorUid: any, offset: any, name: any, completionItem: any) => {
-  return ExtensionHostEditor.execute({
-    editorUid,
-    event: ExtensionHostActivationEvent.OnHover,
-    method: ExtensionHostCommandType.HoverResolveExecute,
-    args: [offset, name, completionItem],
-    noProviderFoundMessage: 'no completion provider found',
-    noProviderFoundResult: [],
-    combineResults: combineResultsResolve,
-  })
-}
