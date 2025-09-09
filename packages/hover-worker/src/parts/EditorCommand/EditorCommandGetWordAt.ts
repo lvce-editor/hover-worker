@@ -1,6 +1,6 @@
 import * as Character from '../Character/Character.ts'
 
-const RE_WORD_END = /[\w\-]+$/
+const RE_WORD_END = /[\w-]+$/
 
 export const getWordBefore = (line: string, columnIndex: number) => {
   const before = line.slice(0, columnIndex)
