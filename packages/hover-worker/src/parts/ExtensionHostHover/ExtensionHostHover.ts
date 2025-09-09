@@ -3,12 +3,12 @@ import * as ExtensionHostActivationEvent from '../ExtensionHostActivationEvent/E
 import * as ExtensionHostCommandType from '../ExtensionHostCommandType/ExtensionHostCommandType.ts'
 import * as ExtensionHostEditor from '../ExtensionHostEditor/ExtensionHostEditor.ts'
 
-export const executeHoverProvider = async (editor: any, offset: number) => {
-  Assert.object(editor)
+export const executeHoverProvider = async (editorUid: number, editorLanguageId: string, offset: number) => {
+  Assert.number(editorUid)
   Assert.number(offset)
   return ExtensionHostEditor.execute({
     event: ExtensionHostActivationEvent.OnHover,
-    editor,
+    editorUid,
     method: ExtensionHostCommandType.HoverExecute,
     args: [offset],
     noProviderFoundMessage: 'No hover provider found',
