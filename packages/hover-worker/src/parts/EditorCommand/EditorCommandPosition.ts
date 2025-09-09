@@ -35,10 +35,8 @@ export const at = (editor: any, eventX: number, eventY: number) => {
   }
 }
 
-/**
- * @deprecated this doesn't work for variable width characters (unicode/emoji).
- * Use position computation in renderer process instead
- **/
+//  @deprecated this doesn't work for variable width characters (unicode/emoji).
+// Use position computation in renderer process instead
 
 /*
  * @param {object} editor
