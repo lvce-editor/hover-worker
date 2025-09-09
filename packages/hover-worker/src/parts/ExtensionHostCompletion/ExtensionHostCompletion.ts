@@ -13,7 +13,7 @@ export const executeHoverProvider = async (editorUid: number, editorLanguageId: 
     event: ExtensionHostActivationEvent.OnHover,
     method: ExtensionHostCommandType.HoverExecute,
     args: [offset],
-    noProviderFoundMessage: 'no completion provider found',
+    noProviderFoundMessage: 'no hover provider found',
     noProviderFoundResult: [],
     combineResults,
   })
