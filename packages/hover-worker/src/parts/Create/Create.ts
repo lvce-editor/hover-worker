@@ -14,6 +14,15 @@ export const create = (uid: number, x: number, y: number, width: number, height:
     version: 0,
     editorUid,
     editorLanguageId,
+    fallbackDisplayStringLanguageId: 'typescript',
+    hoverDocumentationFontSize: 15,
+    hoverDocumentationFontFamily: 'Fira Code',
+    hoverDocumentationLineHeight: '1.33333',
+    hoverBorderLeft: 1,
+    hoverBorderRight: 1,
+    hoverPaddingLeft: 8,
+    hoverPaddingRight: 8,
+    hovverFullWidth: 400,
   }
   FindWidgetStates.set(uid, state, state)
 }
