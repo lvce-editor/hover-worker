@@ -22,5 +22,8 @@ export const createDefaultState = (): HoverState => {
     hoverPaddingLeft: 8,
     hoverPaddingRight: 8,
     hovverFullWidth: 400,
+    documentation: '',
+    lineInfos: [],
+    matchingDiagnostics: [],
   }
 }

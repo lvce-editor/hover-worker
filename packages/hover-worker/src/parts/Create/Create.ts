@@ -23,6 +23,9 @@ export const create = (uid: number, x: number, y: number, width: number, height:
     hoverPaddingLeft: 8,
     hoverPaddingRight: 8,
     hovverFullWidth: 400,
+    documentation: '',
+    lineInfos: [],
+    matchingDiagnostics: [],
   }
   FindWidgetStates.set(uid, state, state)
 }
