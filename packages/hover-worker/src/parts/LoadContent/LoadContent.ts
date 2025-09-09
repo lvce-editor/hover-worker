@@ -23,5 +23,6 @@ export const loadContent = async (state: HoverState): Promise<HoverState> => {
     documentation,
     lineInfos,
     matchingDiagnostics,
+    width: 300,
   }
 }
