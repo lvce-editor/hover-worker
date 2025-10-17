@@ -1,11 +1,11 @@
-import { EditorWorker } from '@lvce-editor/rpc-registry'
+// import {  } from '@lvce-editor/rpc-registry'
 import * as Assert from '../Assert/Assert.ts'
+import * as EditorWorker from '../EditorWorker/EditorWorker.ts'
+import { getHoverDetails } from '../GetHoverDetails/GetHoverDetails.ts'
 import { getHoverPositionXy } from '../GetHoverPositionXy/GetHoverPositionXy.ts'
 import { getOffsetAtCursor } from '../GetOffsetAtCursor/GetOffsetAtCursor.ts'
 import { getPositionAtCursor } from '../GetPositionAtCursor/GetPositionAtCursor.ts'
 import * as Hover from '../Hover/Hover.ts'
-import * as MeasureTextHeight from '../MeasureTextHeight/MeasureTextHeight.ts'
-import * as TokenizeCodeBlock from '../TokenizeCodeBlock/TokenizeCodeBlock.ts'
 
 const getMatchingDiagnostics = (diagnostics: any, rowIndex: number, columnIndex: number) => {
   const matching: any[] = []
@@ -33,35 +33,42 @@ export const getEditorHoverInfo = async (
   Assert.number(editorUid)
   const { rowIndex, columnIndex } = await getPositionAtCursor(editorUid)
   const offset = getOffsetAtCursor(editorUid)
-  const hover = await Hover.getHover(editorUid, editorLanguageId, offset)
+
+  // @ts-ignore
+  const diagnostics = await EditorWorker.invoke('Editor.getDiagnostics', editorUid)
+
+  // @ts-ignore
+  if (diagnostics && diagnostics.length > 0) {
+  }
+  console.log({ diagnostics })
+
+  const { hover, error } = await Hover.getHover(editorUid, editorLanguageId, offset)
   if (!hover) {
     return undefined
   }
-  const { displayString, documentation, displayStringLanguageId } = hover
 
-  const hoverDocumentationWidth = hoverFullWidth - hoverPaddingLeft - hoverPaddingRight - hoverBorderLeft - hoverBorderRight
-
-  const tokenizerPath = ''
-  const lineInfos = await TokenizeCodeBlock.tokenizeCodeBlock(
-    displayString,
-    displayStringLanguageId || fallbackDisplayStringLanguageId,
-    tokenizerPath,
-  )
   const wordPart = await EditorWorker.getWordBefore(editorUid, rowIndex, columnIndex)
   const wordStart = columnIndex - wordPart.length
-  const documentationHeight = await MeasureTextHeight.measureTextBlockHeight(
-    documentation,
+
+  const { documentation, documentationHeight, lineInfos } = await getHoverDetails(
+    hover,
+    error,
+    hoverFullWidth,
+    hoverPaddingLeft,
+    hoverPaddingRight,
+    hoverBorderLeft,
+    hoverBorderRight,
     hoverDocumentationFontFamily,
     hoverDocumentationFontSize,
     hoverDocumentationLineHeight,
-    hoverDocumentationWidth,
+    fallbackDisplayStringLanguageId,
   )
   // TODO
   const editor = {}
   const { x, y } = getHoverPositionXy(editor, rowIndex, wordStart, documentationHeight)
   // @ts-ignore
-  const diagnostics = editor.diagnostics || []
-  const matchingDiagnostics = getMatchingDiagnostics(diagnostics, rowIndex, columnIndex)
+  const diagnostucs = editor.diagnostics || []
+  const matchingDiagnostics = getMatchingDiagnostics(diagnostucs, rowIndex, columnIndex)
   return {
     lineInfos,
     documentation,
