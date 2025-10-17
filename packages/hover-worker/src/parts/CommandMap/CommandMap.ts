@@ -1,3 +1,4 @@
+import { terminate } from '@lvce-editor/viewlet-registry'
 import * as Close from '../Close/Close.ts'
 import * as Create from '../Create/Create.ts'
 import * as Diff2 from '../Diff2/Diff2.ts'
@@ -11,7 +12,6 @@ import * as WrapCommand from '../HoverStates/HoverStates.ts'
 import * as Initialize from '../Initialize/Initialize.ts'
 import * as LoadContent from '../LoadContent/LoadContent.ts'
 import * as Render2 from '../Render2/Render2.ts'
-import * as Terminate from '../Terminate/Terminate.ts'
 
 export const commandMap = {
   'Hover.close': WrapCommand.wrapCommand(Close.close),
@@ -26,5 +26,5 @@ export const commandMap = {
   'Hover.handleSashPointerUp': WrapCommand.wrapCommand(handleSashPointerUp),
   'Hover.handleSashPointerDown': WrapCommand.wrapCommand(handleSashPointerDown),
   'Hover.handleSashPointerMove': WrapCommand.wrapCommand(handleSashPointerMove),
-  'Hover.terminate': Terminate.terminate,
+  'Hover.terminate': terminate,
 }
