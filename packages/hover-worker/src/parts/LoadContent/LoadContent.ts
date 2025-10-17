@@ -41,12 +41,12 @@ export const loadContent = async (state: HoverState): Promise<HoverState> => {
   const { documentation, lineInfos, matchingDiagnostics } = info
   return {
     ...state,
-    leadingWord: wordAtOffset,
-    x,
-    y,
     documentation,
+    leadingWord: wordAtOffset,
     lineInfos,
     matchingDiagnostics,
     width: 300,
+    x,
+    y,
   }
 }
