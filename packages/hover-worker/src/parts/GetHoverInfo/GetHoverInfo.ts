@@ -44,7 +44,6 @@ export const getEditorHoverInfo = async (
   const editor = {}
   const { x, y } = getHoverPositionXy(editor, rowIndex, wordStart)
   // @ts-ignore
-  const diagnostics = editor.diagnostics || []
   const matchingDiagnostics = getMatchingDiagnostics(diagnostics, rowIndex, columnIndex)
 
   const { hover, error } = await Hover.getHover(editorUid, editorLanguageId, offset)
