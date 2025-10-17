@@ -2,7 +2,7 @@
   "id": "test.diagnostic-hover-show",
   "name": "Hover Show Open",
   "description": "Test Empty",
-  "activation": ["onLanguage:xyz", "onHover:xyz"],
+  "activation": ["onLanguage:xyz", "onDiagnostic:xyz"],
   "browser": "main.js",
   "languages": [
     {
