@@ -37,20 +37,28 @@ export const getEditorHoverInfo = async (
   // @ts-ignore
   const diagnostics = await EditorWorker.invoke('Editor.getDiagnostics', editorUid)
 
-  // @ts-ignore
-  if (diagnostics && diagnostics.length > 0) {
-  }
-  console.log({ diagnostics })
-
-  const { hover, error } = await Hover.getHover(editorUid, editorLanguageId, offset)
-  if (!hover) {
-    return undefined
-  }
-
   const wordPart = await EditorWorker.getWordBefore(editorUid, rowIndex, columnIndex)
   const wordStart = columnIndex - wordPart.length
 
-  const { documentation, documentationHeight, lineInfos } = await getHoverDetails(
+  // TODO
+  const editor = {}
+  const { x, y } = getHoverPositionXy(editor, rowIndex, wordStart)
+  // @ts-ignore
+  const diagnostics = editor.diagnostics || []
+  const matchingDiagnostics = getMatchingDiagnostics(diagnostics, rowIndex, columnIndex)
+
+  const { hover, error } = await Hover.getHover(editorUid, editorLanguageId, offset)
+  if (!hover) {
+    return {
+      lineInfos: [],
+      documentation: '',
+      x,
+      y,
+      matchingDiagnostics,
+    }
+  }
+
+  const { documentation, lineInfos } = await getHoverDetails(
     hover,
     error,
     hoverFullWidth,
@@ -63,12 +71,7 @@ export const getEditorHoverInfo = async (
     hoverDocumentationLineHeight,
     fallbackDisplayStringLanguageId,
   )
-  // TODO
-  const editor = {}
-  const { x, y } = getHoverPositionXy(editor, rowIndex, wordStart, documentationHeight)
-  // @ts-ignore
-  const diagnostucs = editor.diagnostics || []
-  const matchingDiagnostics = getMatchingDiagnostics(diagnostucs, rowIndex, columnIndex)
+
   return {
     lineInfos,
     documentation,
