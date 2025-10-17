@@ -1,6 +1,6 @@
 import { EditorWorker } from '@lvce-editor/rpc-registry'
 import * as Assert from '../Assert/Assert.ts'
-import * as EditorPosition from '../EditorCommand/EditorCommandPosition.ts'
+import { getHoverPositionXy } from '../GetHoverPositionXy/GetHoverPositionXy.ts'
 import { getOffsetAtCursor } from '../GetOffsetAtCursor/GetOffsetAtCursor.ts'
 import { getPositionAtCursor } from '../GetPositionAtCursor/GetPositionAtCursor.ts'
 import * as Hover from '../Hover/Hover.ts'
@@ -15,15 +15,6 @@ const getMatchingDiagnostics = (diagnostics: any, rowIndex: number, columnIndex:
     }
   }
   return matching
-}
-
-const getHoverPositionXy = (editor: any, rowIndex: number, wordStart: any, documentationHeight: any) => {
-  const x = EditorPosition.x(editor, rowIndex, wordStart)
-  const y = editor.height - EditorPosition.y(editor, rowIndex) + editor.y + 40
-  return {
-    x,
-    y,
-  }
 }
 
 export const getEditorHoverInfo = async (
