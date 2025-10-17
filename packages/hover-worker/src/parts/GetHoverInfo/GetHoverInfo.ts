@@ -1,4 +1,3 @@
-// import {  } from '@lvce-editor/rpc-registry'
 import * as Assert from '../Assert/Assert.ts'
 import * as EditorWorker from '../EditorWorker/EditorWorker.ts'
 import { getHoverDetails } from '../GetHoverDetails/GetHoverDetails.ts'
