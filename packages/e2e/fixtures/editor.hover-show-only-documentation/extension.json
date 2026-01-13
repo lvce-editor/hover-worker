@@ -1,0 +1,13 @@
+{
+  "id": "test.hover-only-documentation",
+  "name": "Hover Only Documentation",
+  "description": "Test extension that returns only documentation field",
+  "activation": ["onLanguage:xyz", "onHover:xyz"],
+  "browser": "main.js",
+  "languages": [
+    {
+      "id": "xyz",
+      "extensions": [".xyz"]
+    }
+  ]
+}

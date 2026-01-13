@@ -1,0 +1,13 @@
+{
+  "id": "test.hover-error-thrown",
+  "name": "Hover Error Thrown",
+  "description": "Test extension that throws error during provideHover",
+  "activation": ["onLanguage:xyz", "onHover:xyz"],
+  "browser": "main.js",
+  "languages": [
+    {
+      "id": "xyz",
+      "extensions": [".xyz"]
+    }
+  ]
+}

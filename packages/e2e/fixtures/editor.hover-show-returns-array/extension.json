@@ -1,0 +1,13 @@
+{
+  "id": "test.hover-returns-array",
+  "name": "Hover Returns Array",
+  "description": "Test extension that returns array instead of object",
+  "activation": ["onLanguage:xyz", "onHover:xyz"],
+  "browser": "main.js",
+  "languages": [
+    {
+      "id": "xyz",
+      "extensions": [".xyz"]
+    }
+  ]
+}

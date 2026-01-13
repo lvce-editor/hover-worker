@@ -1,0 +1,13 @@
+{
+  "id": "test.hover-returns-null",
+  "name": "Hover Returns Null",
+  "description": "Test extension that returns null",
+  "activation": ["onLanguage:xyz", "onHover:xyz"],
+  "browser": "main.js",
+  "languages": [
+    {
+      "id": "xyz",
+      "extensions": [".xyz"]
+    }
+  ]
+}

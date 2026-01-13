@@ -1,0 +1,13 @@
+{
+  "id": "test.hover-mixed-providers",
+  "name": "Hover Mixed Providers (one fails)",
+  "description": "Test first extension that throws error",
+  "activation": ["onLanguage:xyz", "onHover:xyz"],
+  "browser": "main.js",
+  "languages": [
+    {
+      "id": "xyz",
+      "extensions": [".xyz"]
+    }
+  ]
+}

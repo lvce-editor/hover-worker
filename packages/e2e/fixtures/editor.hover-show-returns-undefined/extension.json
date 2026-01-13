@@ -1,0 +1,13 @@
+{
+  "id": "test.hover-returns-undefined",
+  "name": "Hover Returns Undefined",
+  "description": "Test extension that returns undefined",
+  "activation": ["onLanguage:xyz", "onHover:xyz"],
+  "browser": "main.js",
+  "languages": [
+    {
+      "id": "xyz",
+      "extensions": [".xyz"]
+    }
+  ]
+}

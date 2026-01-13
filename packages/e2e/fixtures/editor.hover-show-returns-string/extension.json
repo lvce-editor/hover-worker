@@ -1,0 +1,13 @@
+{
+  "id": "test.hover-returns-string",
+  "name": "Hover Returns String",
+  "description": "Test extension that returns string instead of object",
+  "activation": ["onLanguage:xyz", "onHover:xyz"],
+  "browser": "main.js",
+  "languages": [
+    {
+      "id": "xyz",
+      "extensions": [".xyz"]
+    }
+  ]
+}

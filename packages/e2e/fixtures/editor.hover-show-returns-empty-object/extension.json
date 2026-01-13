@@ -1,0 +1,13 @@
+{
+  "id": "test.hover-returns-empty-object",
+  "name": "Hover Returns Empty Object",
+  "description": "Test extension that returns empty object",
+  "activation": ["onLanguage:xyz", "onHover:xyz"],
+  "browser": "main.js",
+  "languages": [
+    {
+      "id": "xyz",
+      "extensions": [".xyz"]
+    }
+  ]
+}
