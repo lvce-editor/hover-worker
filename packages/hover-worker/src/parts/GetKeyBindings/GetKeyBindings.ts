@@ -5,8 +5,8 @@ import * as WidgetId from '../WidgetId/WidgetId.ts'
 
 const getCommand = (shortId: string): any => {
   return {
-    command: 'Editor.executeWidgetCommand',
     args: ['Hovers', `Hovers.${shortId}`, 0, WidgetId.Hover],
+    command: 'Editor.executeWidgetCommand',
   }
 }
 

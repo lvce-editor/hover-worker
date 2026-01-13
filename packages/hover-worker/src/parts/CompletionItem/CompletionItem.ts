@@ -1,6 +1,6 @@
 export interface HoverItem {
-  readonly label: string
-  readonly kind: number
   readonly flags: number
+  readonly kind: number
+  readonly label: string
   readonly matches: readonly number[]
 }

@@ -2,13 +2,13 @@ import * as Assert from '../Assert/Assert.ts'
 import * as ExtensionHostHover from '../ExtensionHostHover/ExtensionHostHover.ts'
 
 interface HoverSuccessResult {
-  readonly hover: any
   readonly error: undefined
+  readonly hover: any
 }
 
 interface HoverErrorResult {
-  readonly hover: undefined
   readonly error: unknown
+  readonly hover: undefined
 }
 
 type HoverResult = HoverSuccessResult | HoverErrorResult
@@ -20,13 +20,13 @@ export const getHover = async (editorUid: number, editorLanguageId: string, offs
     // TODO invoke extension host worker directly
     const hover = await ExtensionHostHover.executeHoverProvider(editorUid, editorLanguageId, offset)
     return {
-      hover,
       error: undefined,
+      hover,
     }
   } catch (error) {
     return {
-      hover: undefined,
       error,
+      hover: undefined,
     }
   }
 }

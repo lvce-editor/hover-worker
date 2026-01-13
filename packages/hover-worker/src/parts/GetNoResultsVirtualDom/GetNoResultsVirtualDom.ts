@@ -4,8 +4,8 @@ import * as VirtualDomElements from '../VirtualDomElements/VirtualDomElements.ts
 import { text } from '../VirtualDomHelpers/VirtualDomHelpers.ts'
 
 const parentNode: VirtualDomNode = {
-  type: VirtualDomElements.Div,
   childCount: 1,
+  type: VirtualDomElements.Div,
 }
 
 export const getNoResultsVirtualDom = (): readonly VirtualDomNode[] => {

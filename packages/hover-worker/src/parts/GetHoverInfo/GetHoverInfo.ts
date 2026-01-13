@@ -30,7 +30,7 @@ export const getEditorHoverInfo = async (
   fallbackDisplayStringLanguageId: string,
 ) => {
   Assert.number(editorUid)
-  const { rowIndex, columnIndex } = await getPositionAtCursor(editorUid)
+  const { columnIndex, rowIndex } = await getPositionAtCursor(editorUid)
   const offset = getOffsetAtCursor(editorUid)
 
   // @ts-ignore
@@ -45,14 +45,14 @@ export const getEditorHoverInfo = async (
   // @ts-ignore
   const matchingDiagnostics = getMatchingDiagnostics(diagnostics, rowIndex, columnIndex)
 
-  const { hover, error } = await Hover.getHover(editorUid, editorLanguageId, offset)
+  const { error, hover } = await Hover.getHover(editorUid, editorLanguageId, offset)
   if (!hover) {
     return {
-      lineInfos: [],
       documentation: '',
+      lineInfos: [],
+      matchingDiagnostics,
       x,
       y,
-      matchingDiagnostics,
     }
   }
 
@@ -71,10 +71,10 @@ export const getEditorHoverInfo = async (
   )
 
   return {
-    lineInfos,
     documentation,
+    lineInfos,
+    matchingDiagnostics,
     x,
     y,
-    matchingDiagnostics,
   }
 }

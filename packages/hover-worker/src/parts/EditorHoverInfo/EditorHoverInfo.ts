@@ -1,7 +1,7 @@
 export interface EditorHoverInfo {
-  readonly lineInfos: readonly any[]
   readonly documentation: string
+  readonly lineInfos: readonly any[]
+  readonly matchingDiagnostics: readonly any[]
   readonly x: number
   readonly y: number
-  readonly matchingDiagnostics: readonly any[]
 }
