@@ -1,0 +1,13 @@
+{
+  "id": "test.hover-long-text",
+  "name": "Hover Long Text",
+  "description": "Test extension that returns very long text",
+  "activation": ["onLanguage:xyz", "onHover:xyz"],
+  "browser": "main.js",
+  "languages": [
+    {
+      "id": "xyz",
+      "extensions": [".xyz"]
+    }
+  ]
+}

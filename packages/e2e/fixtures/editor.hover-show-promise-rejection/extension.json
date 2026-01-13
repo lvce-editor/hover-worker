@@ -1,0 +1,13 @@
+{
+  "id": "test.hover-promise-rejection",
+  "name": "Hover Promise Rejection",
+  "description": "Test extension that returns rejected promise",
+  "activation": ["onLanguage:xyz", "onHover:xyz"],
+  "browser": "main.js",
+  "languages": [
+    {
+      "id": "xyz",
+      "extensions": [".xyz"]
+    }
+  ]
+}

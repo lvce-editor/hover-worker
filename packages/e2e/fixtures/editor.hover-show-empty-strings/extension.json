@@ -1,0 +1,13 @@
+{
+  "id": "test.hover-empty-strings",
+  "name": "Hover Empty Strings",
+  "description": "Test extension that returns empty strings",
+  "activation": ["onLanguage:xyz", "onHover:xyz"],
+  "browser": "main.js",
+  "languages": [
+    {
+      "id": "xyz",
+      "extensions": [".xyz"]
+    }
+  ]
+}

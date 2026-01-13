@@ -1,0 +1,13 @@
+{
+  "id": "test.hover-extra-properties",
+  "name": "Hover Extra Properties",
+  "description": "Test extension that returns extra unexpected properties",
+  "activation": ["onLanguage:xyz", "onHover:xyz"],
+  "browser": "main.js",
+  "languages": [
+    {
+      "id": "xyz",
+      "extensions": [".xyz"]
+    }
+  ]
+}

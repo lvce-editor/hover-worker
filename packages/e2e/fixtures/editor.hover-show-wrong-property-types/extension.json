@@ -1,0 +1,13 @@
+{
+  "id": "test.hover-wrong-property-types",
+  "name": "Hover Wrong Property Types",
+  "description": "Test extension that returns wrong property types",
+  "activation": ["onLanguage:xyz", "onHover:xyz"],
+  "browser": "main.js",
+  "languages": [
+    {
+      "id": "xyz",
+      "extensions": [".xyz"]
+    }
+  ]
+}

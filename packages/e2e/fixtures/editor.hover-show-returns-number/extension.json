@@ -1,0 +1,13 @@
+{
+  "id": "test.hover-returns-number",
+  "name": "Hover Returns Number",
+  "description": "Test extension that returns number instead of object",
+  "activation": ["onLanguage:xyz", "onHover:xyz"],
+  "browser": "main.js",
+  "languages": [
+    {
+      "id": "xyz",
+      "extensions": [".xyz"]
+    }
+  ]
+}

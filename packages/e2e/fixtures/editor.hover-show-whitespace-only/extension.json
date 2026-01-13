@@ -1,0 +1,13 @@
+{
+  "id": "test.hover-whitespace-only",
+  "name": "Hover Whitespace Only",
+  "description": "Test extension that returns whitespace-only strings",
+  "activation": ["onLanguage:xyz", "onHover:xyz"],
+  "browser": "main.js",
+  "languages": [
+    {
+      "id": "xyz",
+      "extensions": [".xyz"]
+    }
+  ]
+}
