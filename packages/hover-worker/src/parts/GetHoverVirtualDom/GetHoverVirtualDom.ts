@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/no-immediate-mutation */
 import type { VirtualDomNode } from '../VirtualDomNode/VirtualDomNode.ts'
 import * as ClassNames from '../ClassNames/ClassNames.ts'
 import * as DomEventListenerFunctions from '../DomEventListenerFunctions/DomEventListenerFunctions.ts'
