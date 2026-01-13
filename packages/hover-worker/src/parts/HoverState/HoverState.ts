@@ -13,9 +13,9 @@ export interface HoverState {
   readonly hoverDocumentationFontFamily: string
   readonly hoverDocumentationFontSize: number
   readonly hoverDocumentationLineHeight: string
+  readonly hoverFullWidth: number
   readonly hoverPaddingLeft: number
   readonly hoverPaddingRight: number
-  readonly hoverFullWidth: number
   readonly leadingWord: string
   readonly lineInfos: readonly LineInfo[]
   readonly matchingDiagnostics: readonly any[]

@@ -4,7 +4,7 @@ export const name = 'editor.hover-hide'
 
 export const skip = 1
 
-export const test: Test = async ({ Command, FileSystem, Main, Editor, Locator, expect, Extension }) => {
+export const test: Test = async ({ Command, Editor, expect, Extension, FileSystem, Locator, Main }) => {
   // arrange
   const url = new URL('../fixtures/editor.hover-show', import.meta.url).toString()
   await Extension.addWebExtension(url)

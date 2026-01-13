@@ -2,9 +2,9 @@ import * as MeasureTextHeight from '../MeasureTextHeight/MeasureTextHeight.ts'
 import * as TokenizeCodeBlock from '../TokenizeCodeBlock/TokenizeCodeBlock.ts'
 
 interface HoverDetails {
-  readonly lineInfos: readonly any[]
   readonly documentation: string
   readonly documentationHeight: number
+  readonly lineInfos: readonly any[]
 }
 
 export const getHoverDetails = async (
@@ -22,13 +22,13 @@ export const getHoverDetails = async (
 ): Promise<HoverDetails> => {
   if (error) {
     return {
-      lineInfos: [],
       documentation: '',
       documentationHeight: 0,
+      lineInfos: [],
     }
   }
 
-  const { displayString, documentation, displayStringLanguageId } = hover
+  const { displayString, displayStringLanguageId, documentation } = hover
 
   const hoverDocumentationWidth = hoverFullWidth - hoverPaddingLeft - hoverPaddingRight - hoverBorderLeft - hoverBorderRight
 
@@ -47,8 +47,8 @@ export const getHoverDetails = async (
     hoverDocumentationWidth,
   )
   return {
-    lineInfos,
     documentation,
     documentationHeight,
+    lineInfos,
   }
 }

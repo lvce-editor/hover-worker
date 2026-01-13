@@ -2,9 +2,9 @@ import * as ActivateByEvent from '../ActivateByEvent/ActivateByEvent.ts'
 import * as ExtensionHostWorker from '../ExtensionHostWorker/ExtensionHostWorker.ts'
 
 export const execute = async ({
+  args,
   editorLanguageId,
   editorUid,
-  args,
   event,
   method,
   noProviderFoundMessage,
