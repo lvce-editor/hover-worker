@@ -3,31 +3,27 @@ import { MockRpc } from '@lvce-editor/rpc'
 import { EditorWorker } from '@lvce-editor/rpc-registry'
 import { getEditorHoverInfo } from '../src/parts/GetHoverInfo/GetHoverInfo.ts'
 
-let mockInvoke: any
-
 beforeEach(() => {
-  mockInvoke = jest.fn((...args: any[]) => {
-    const method = args[0]
-    switch (method) {
-      case 'Editor.getDiagnostics':
-        return Promise.resolve([])
-      case 'Editor.getPositionAtCursor':
-        return Promise.resolve({ columnIndex: 5, rowIndex: 10, x: 100, y: 200 })
-      case 'Editor.getWordBefore':
-        return Promise.resolve('const')
-      default:
-        return Promise.resolve(undefined)
-    }
-  })
-  
   const mockRpc = MockRpc.create({
     commandMap: {},
-    invoke: mockInvoke,
+    invoke: jest.fn((...args: any[]) => {
+      const method = args[0]
+      switch (method) {
+        case 'Editor.getPositionAtCursor':
+          return Promise.resolve({ columnIndex: 5, rowIndex: 10, x: 100, y: 200 })
+        case 'Editor.getDiagnostics':
+          return Promise.resolve([])
+        case 'Editor.getWordBefore':
+          return Promise.resolve('const')
+        default:
+          return Promise.resolve(undefined)
+      }
+    }),
   })
-  EditorWorker.set(mockRpc)
+  EditorWorker.registerMockRpc(mockRpc)
 })
 
-test.skip('getEditorHoverInfo should return hover info structure', async () => {
+test('getEditorHoverInfo should return hover info structure', async () => {
   const result = await getEditorHoverInfo(
     123,
     'typescript',
@@ -54,7 +50,7 @@ test.skip('getEditorHoverInfo should return hover info structure', async () => {
   expect(typeof result.y).toBe('number')
 })
 
-test.skip('getEditorHoverInfo should handle different parameters', async () => {
+test('getEditorHoverInfo should handle different parameters', async () => {
   const result1 = await getEditorHoverInfo(
     456,
     'javascript',
