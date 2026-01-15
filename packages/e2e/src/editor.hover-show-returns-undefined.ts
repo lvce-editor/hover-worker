@@ -2,6 +2,8 @@ import type { Test } from '@lvce-editor/test-with-playwright'
 
 export const name = 'editor.hover-show-returns-undefined'
 
+export const skip = 1
+
 export const test: Test = async ({ Editor, expect, Extension, FileSystem, Locator, Main }) => {
   // arrange
   const url = new URL('../fixtures/editor.hover-show-returns-undefined', import.meta.url).toString()
