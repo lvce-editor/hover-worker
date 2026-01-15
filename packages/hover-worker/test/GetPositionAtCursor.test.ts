@@ -10,7 +10,7 @@ beforeEach(() => {
   
   const mockRpc = MockRpc.create({
     commandMap: {},
-    invoke: mockInvoke as any,
+    invoke: mockInvoke,
   })
   EditorWorker.set(mockRpc)
 })

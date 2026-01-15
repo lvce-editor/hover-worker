@@ -9,10 +9,10 @@ beforeEach(() => {
   mockInvoke = jest.fn((...args: any[]) => {
     const method = args[0]
     switch (method) {
-      case 'Editor.getPositionAtCursor':
-        return Promise.resolve({ columnIndex: 5, rowIndex: 10, x: 100, y: 200 })
       case 'Editor.getDiagnostics':
         return Promise.resolve([])
+      case 'Editor.getPositionAtCursor':
+        return Promise.resolve({ columnIndex: 5, rowIndex: 10, x: 100, y: 200 })
       case 'Editor.getWordBefore':
         return Promise.resolve('const')
       default:
@@ -22,7 +22,7 @@ beforeEach(() => {
   
   const mockRpc = MockRpc.create({
     commandMap: {},
-    invoke: mockInvoke as any,
+    invoke: mockInvoke,
   })
   EditorWorker.set(mockRpc)
 })

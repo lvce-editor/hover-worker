@@ -28,7 +28,7 @@ test('getHoverVirtualDom should handle documentation', () => {
 
 test('getHoverVirtualDom should handle diagnostics', () => {
   const mockDiagnostics = [
-    { message: 'Error message', source: 'TypeScript', code: '123' }
+    { code: '123', message: 'Error message', source: 'TypeScript' }
   ]
   
   const result = getHoverVirtualDom([], null, mockDiagnostics)
@@ -40,7 +40,7 @@ test('getHoverVirtualDom should handle diagnostics', () => {
 test('getHoverVirtualDom should handle all inputs', () => {
   const mockLineInfos = [['const x = 5', 'token1']]
   const mockDiagnostics = [
-    { message: 'Error message', source: 'TypeScript', code: '123' }
+    { code: '123', message: 'Error message', source: 'TypeScript' }
   ]
   
   const result = getHoverVirtualDom(mockLineInfos, 'Documentation', mockDiagnostics)
