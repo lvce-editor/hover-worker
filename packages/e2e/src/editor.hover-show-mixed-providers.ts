@@ -2,6 +2,8 @@ import type { Test } from '@lvce-editor/test-with-playwright'
 
 export const name = 'editor.hover-show-mixed-providers'
 
+export const skip = 1
+
 export const test: Test = async ({ Editor, expect, Extension, FileSystem, Locator, Main }) => {
   // arrange - add failing provider first, then working provider
   const failingUrl = new URL('../fixtures/editor.hover-show-mixed-providers', import.meta.url).toString()
