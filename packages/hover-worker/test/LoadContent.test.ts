@@ -1,22 +1,15 @@
-import { test, expect, beforeEach } from '@jest/globals'
-import { MockRpc } from '@lvce-editor/rpc'
+import { test, expect } from '@jest/globals'
 import { EditorWorker } from '@lvce-editor/rpc-registry'
 import { loadContent } from '../src/parts/LoadContent/LoadContent.ts'
 
-beforeEach(() => {
-  const mockRpc = MockRpc.create({
-    invoke: () => Promise.resolve(undefined),
-    commandMap: {
-      'Editor.getPositionAtCursor': () => Promise.resolve({ columnIndex: 5, rowIndex: 10, x: 100, y: 200 }),
-      'Editor.getDiagnostics': () => Promise.resolve([]),
-      'Editor.getWordBefore': () => Promise.resolve('const'),
-      'Editor.getWordAtOffset2': () => Promise.resolve('test'),
-    }
-  })
-  EditorWorker.registerMockRpc(mockRpc)
-})
-
 test('loadContent should return state for valid input', async () => {
+  EditorWorker.registerMockRpc({
+    'Editor.getPositionAtCursor': () => Promise.resolve({ columnIndex: 5, rowIndex: 10, x: 100, y: 200 }),
+    'Editor.getDiagnostics': () => Promise.resolve([]),
+    'Editor.getWordBefore': () => Promise.resolve('const'),
+    'Editor.getWordAtOffset2': () => Promise.resolve('test'),
+  })
+  
   const mockState = {
     editorLanguageId: 'typescript',
     editorUid: 123,
@@ -25,10 +18,14 @@ test('loadContent should return state for valid input', async () => {
     hoverBorderRight: 1,
     hoverDocumentationFontFamily: 'Arial',
     hoverDocumentationFontSize: 14,
+    hoverDocumentationLineHeight: '1.4',
+    hoverFullWidth: 400,
+    hoverPaddingLeft: 10,
+    hoverPaddingRight: 10,
   }
-
+  
   const result = await loadContent(mockState as any)
-
+  
   expect(result).toBeDefined()
   expect(result).toHaveProperty('documentation')
   expect(result).toHaveProperty('lineInfos')
@@ -38,7 +35,14 @@ test('loadContent should return state for valid input', async () => {
 })
 
 test('loadContent should handle null input', async () => {
+  EditorWorker.registerMockRpc({
+    'Editor.getPositionAtCursor': () => Promise.resolve({ columnIndex: 5, rowIndex: 10, x: 100, y: 200 }),
+    'Editor.getDiagnostics': () => Promise.resolve([]),
+    'Editor.getWordBefore': () => Promise.resolve('const'),
+    'Editor.getWordAtOffset2': () => Promise.resolve('test'),
+  })
+  
   const result = await loadContent(null as any)
-
+  
   expect(result).toBeDefined()
 })

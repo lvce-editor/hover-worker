@@ -1,19 +1,28 @@
-import { test, expect, beforeEach } from '@jest/globals'
-import { MockRpc } from '@lvce-editor/rpc'
+import { test, expect } from '@jest/globals'
 import { EditorWorker } from '@lvce-editor/rpc-registry'
 import { getEditorHoverInfo } from '../src/parts/GetHoverInfo/GetHoverInfo.ts'
 
-beforeEach(() => {
+test('getEditorHoverInfo should return hover info structure', async () => {
   EditorWorker.registerMockRpc({
     'Editor.getPositionAtCursor': () => Promise.resolve({ columnIndex: 5, rowIndex: 10, x: 100, y: 200 }),
     'Editor.getDiagnostics': () => Promise.resolve([]),
     'Editor.getWordBefore': () => Promise.resolve('const'),
   })
-})
-
-test('getEditorHoverInfo should return hover info structure', async () => {
-  const result = await getEditorHoverInfo(123, 'typescript', 400, 10, 10, 1, 1, 'Arial', 14, '1.4', 'javascript')
-
+  
+  const result = await getEditorHoverInfo(
+    123,
+    'typescript',
+    400,
+    10,
+    10,
+    1,
+    1,
+    'Arial',
+    14,
+    '1.4',
+    'javascript'
+  )
+  
   expect(result).toHaveProperty('documentation')
   expect(result).toHaveProperty('lineInfos')
   expect(result).toHaveProperty('matchingDiagnostics')
@@ -27,8 +36,26 @@ test('getEditorHoverInfo should return hover info structure', async () => {
 })
 
 test('getEditorHoverInfo should handle different parameters', async () => {
-  const result1 = await getEditorHoverInfo(456, 'javascript', 800, 20, 20, 2, 2, 'Monaco', 16, '1.5', 'typescript')
-
+  EditorWorker.registerMockRpc({
+    'Editor.getPositionAtCursor': () => Promise.resolve({ columnIndex: 3, rowIndex: 7, x: 50, y: 150 }),
+    'Editor.getDiagnostics': () => Promise.resolve([]),
+    'Editor.getWordBefore': () => Promise.resolve('test'),
+  })
+  
+  const result1 = await getEditorHoverInfo(
+    456,
+    'javascript',
+    800,
+    20,
+    20,
+    2,
+    2,
+    'Monaco',
+    16,
+    '1.5',
+    'typescript'
+  )
+  
   expect(result1).toHaveProperty('documentation')
   expect(result1).toHaveProperty('lineInfos')
   expect(result1).toHaveProperty('matchingDiagnostics')
