@@ -1,4 +1,4 @@
-import { test, expect, beforeEach, jest } from '@jest/globals'
+import { test, expect, beforeEach } from '@jest/globals'
 import { MockRpc } from '@lvce-editor/rpc'
 import { EditorWorker } from '@lvce-editor/rpc-registry'
 import * as HoverStates from '../src/parts/HoverStates/HoverStates.ts'
@@ -6,8 +6,8 @@ import { render2 } from '../src/parts/Render2/Render2.ts'
 
 beforeEach(() => {
   const mockRpc = MockRpc.create({
+    invoke: () => Promise.resolve(undefined),
     commandMap: {},
-    invoke: jest.fn(),
   })
   EditorWorker.registerMockRpc(mockRpc)
   

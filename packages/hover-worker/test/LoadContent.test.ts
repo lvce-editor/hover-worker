@@ -5,13 +5,13 @@ import { loadContent } from '../src/parts/LoadContent/LoadContent.ts'
 
 beforeEach(() => {
   const mockRpc = MockRpc.create({
+    invoke: () => Promise.resolve(undefined),
     commandMap: {
       'Editor.getPositionAtCursor': () => Promise.resolve({ columnIndex: 5, rowIndex: 10, x: 100, y: 200 }),
       'Editor.getDiagnostics': () => Promise.resolve([]),
       'Editor.getWordBefore': () => Promise.resolve('const'),
       'Editor.getWordAtOffset2': () => Promise.resolve('test'),
-    },
-    invoke: jest.fn(),
+    }
   })
   EditorWorker.registerMockRpc(mockRpc)
 })
