@@ -2,7 +2,7 @@ import { test, expect } from '@jest/globals'
 import { renderItems } from '../src/parts/RenderItems/RenderItems.ts'
 
 test('renderItems should return array for valid input', () => {
-  const result = renderItems({ uid: 123, documentation: '', lineInfos: [], matchingDiagnostics: [] } as any, { documentation: '', lineInfos: [], matchingDiagnostics: [], uid: 456 } as any)
+  const result = renderItems({ documentation: '', lineInfos: [], matchingDiagnostics: [], uid: 123 } as any, { documentation: '', lineInfos: [], matchingDiagnostics: [], uid: 456 } as any)
   
   expect(Array.isArray(result)).toBe(true)
   expect(result).toHaveLength(3)
@@ -11,8 +11,8 @@ test('renderItems should return array for valid input', () => {
 })
 
 test('renderItems should handle different state objects', () => {
-  const state1 = { uid: 111, documentation: '', lineInfos: [], matchingDiagnostics: [] }
-  const state2 = { uid: 222, documentation: 'test', lineInfos: [], matchingDiagnostics: [] }
+  const state1 = { documentation: '', lineInfos: [], matchingDiagnostics: [], uid: 111 }
+  const state2 = { documentation: 'test', lineInfos: [], matchingDiagnostics: [], uid: 222 }
   
   const result1 = renderItems(state1 as any, state2 as any)
   const result2 = renderItems(state2 as any, state1 as any)
