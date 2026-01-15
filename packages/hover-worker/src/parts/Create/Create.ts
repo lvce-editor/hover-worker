@@ -12,7 +12,7 @@ export const create = (uid: number, x: number, y: number, width: number, height:
     height: 0,
     hoverBorderLeft: 1,
     hoverBorderRight: 1,
-    hoverDocumentationFontFamily: 'Fira Code',
+    hoverDocumentationFontFamily: 'Fira Code', // TODO make it configurable
     hoverDocumentationFontSize: 15,
     hoverDocumentationLineHeight: '1.33333',
     hoverFullWidth: 400,
