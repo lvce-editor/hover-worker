@@ -1,4 +1,4 @@
-import * as EditorWorker from '../EditorWorker/EditorWorker.ts'
+import { EditorWorker } from '@lvce-editor/rpc-registry'
 
 export const getWordAt = async (uid: number, rowIndex: number, columnIndex: number): Promise<string> => {
   // @ts-ignore
