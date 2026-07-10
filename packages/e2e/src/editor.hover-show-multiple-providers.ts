@@ -4,8 +4,8 @@ export const name = 'editor.hover-show-multiple-providers'
 
 export const test: Test = async ({ Editor, expect, Extension, FileSystem, Locator, Main }) => {
   // arrange
-  const url1 = new URL('../fixtures/editor.hover-show-multiple-providers-1', import.meta.url).toString()
-  const url2 = new URL('../fixtures/editor.hover-show-multiple-providers-2', import.meta.url).toString()
+  const url1 = import.meta.resolve('../fixtures/editor.hover-show-multiple-providers-1')
+  const url2 = import.meta.resolve('../fixtures/editor.hover-show-multiple-providers-2')
   await Extension.addWebExtension(url1)
   await Extension.addWebExtension(url2)
   const tmpDir = await FileSystem.getTmpDir()
