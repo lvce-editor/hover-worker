@@ -4,7 +4,7 @@ export const name = 'editor.hover-show-whitespace-only'
 
 export const test: Test = async ({ Editor, expect, Extension, FileSystem, Locator, Main }) => {
   // arrange
-  const url = new URL('../fixtures/editor.hover-show-whitespace-only', import.meta.url).toString()
+  const url = import.meta.resolve('../fixtures/editor.hover-show-whitespace-only')
   await Extension.addWebExtension(url)
   const tmpDir = await FileSystem.getTmpDir()
   await FileSystem.writeFile(`${tmpDir}/src/test.xyz`, 'globalThis.AbortSignal.abort()')
@@ -16,5 +16,5 @@ export const test: Test = async ({ Editor, expect, Extension, FileSystem, Locato
 
   // assert - behavior depends on implementation
   const hover = Locator('.EditorHover')
-  // May or may not appear - tests whitespace handling
+  await expect(hover).toBeVisible()
 }
