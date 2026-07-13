@@ -1,5 +1,5 @@
 import * as Assert from '../Assert/Assert.ts'
-import * as EditorWorker from '../EditorWorker/EditorWorker.ts'
+import { EditorWorker } from '@lvce-editor/rpc-registry'
 import { getHoverDetails } from '../GetHoverDetails/GetHoverDetails.ts'
 import { getHoverPositionXy } from '../GetHoverPositionXy/GetHoverPositionXy.ts'
 import { getOffsetAtCursor } from '../GetOffsetAtCursor/GetOffsetAtCursor.ts'
