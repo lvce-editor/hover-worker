@@ -1,6 +1,7 @@
 import { cp } from 'node:fs/promises'
 import { join } from 'node:path'
 import { root } from './root.ts'
+import { buildE2eExtensions } from './buildE2eExtensions.ts'
 
 const sharedProcess = await import('@lvce-editor/shared-process')
 
@@ -9,6 +10,8 @@ await sharedProcess.exportStatic({
   root,
   extensionPath: '',
 })
+
+await buildE2eExtensions()
 
 // await cp(
 //   join(root, '.tmp', 'dist', 'dist', 'iframeWorkerMain.js'),
