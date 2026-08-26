@@ -4,7 +4,7 @@ export const name = 'editor.hover-show-long-text'
 
 export const test: Test = async ({ Editor, expect, Extension, FileSystem, Locator, Main }) => {
   // arrange
-  const url = new URL('../fixtures/editor.hover-show-long-text', import.meta.url).toString()
+  const url = import.meta.resolve('../fixtures/editor.hover-show-long-text')
   await Extension.addWebExtension(url)
   const tmpDir = await FileSystem.getTmpDir()
   await FileSystem.writeFile(`${tmpDir}/src/test.xyz`, 'globalThis.AbortSignal.abort()')

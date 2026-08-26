@@ -3,7 +3,14 @@
   "name": "Hover Long Text",
   "description": "Test extension that returns very long text",
   "activation": ["onLanguage:xyz", "onHover:xyz"],
-  "browser": "main.js",
+  "browser": "dist/main.js",
+  "isolated": true,
+  "hoverProviders": [
+    {
+      "id": "hover-long-text",
+      "languageId": "xyz"
+    }
+  ],
   "languages": [
     {
       "id": "xyz",

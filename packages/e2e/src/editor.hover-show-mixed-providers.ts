@@ -6,8 +6,8 @@ export const skip = 1
 
 export const test: Test = async ({ Editor, expect, Extension, FileSystem, Locator, Main }) => {
   // arrange - add failing provider first, then working provider
-  const failingUrl = new URL('../fixtures/editor.hover-show-mixed-providers', import.meta.url).toString()
-  const workingUrl = new URL('../fixtures/editor.hover-show', import.meta.url).toString()
+  const failingUrl = import.meta.resolve('../fixtures/editor.hover-show-mixed-providers')
+  const workingUrl = import.meta.resolve('../fixtures/editor.hover-show')
   await Extension.addWebExtension(failingUrl)
   await Extension.addWebExtension(workingUrl)
   const tmpDir = await FileSystem.getTmpDir()

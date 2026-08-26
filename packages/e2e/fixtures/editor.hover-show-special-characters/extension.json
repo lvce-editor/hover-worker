@@ -3,7 +3,14 @@
   "name": "Hover Special Characters",
   "description": "Test extension that returns HTML and special characters",
   "activation": ["onLanguage:xyz", "onHover:xyz"],
-  "browser": "main.js",
+  "browser": "dist/main.js",
+  "isolated": true,
+  "hoverProviders": [
+    {
+      "id": "hover-special-characters",
+      "languageId": "xyz"
+    }
+  ],
   "languages": [
     {
       "id": "xyz",
