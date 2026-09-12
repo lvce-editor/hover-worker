@@ -7,6 +7,9 @@ import * as MergeClassNames from '../MergeClassNames/MergeClassNames.ts'
 import * as VirtualDomElements from '../VirtualDomElements/VirtualDomElements.ts'
 import { text } from '../VirtualDomHelpers/VirtualDomHelpers.ts'
 
+const hoverClassName = MergeClassNames.mergeClassNames(ClassNames.Viewlet, ClassNames.EditorHover)
+const problemClassName = MergeClassNames.mergeClassNames(ClassNames.HoverDisplayString, ClassNames.HoverProblem)
+
 const hoverProblemMessage: VirtualDomNode = {
   childCount: 1,
   className: ClassNames.HoverProblemMessage,
@@ -41,13 +44,13 @@ export const getHoverVirtualDom = (lineInfos: any, documentation: any, diagnosti
   const dom: VirtualDomNode[] = []
   dom.push({
     childCount: getChildCount(lineInfos, documentation, diagnostics) + 1,
-    className: MergeClassNames.mergeClassNames(ClassNames.Viewlet, ClassNames.EditorHover),
+    className: hoverClassName,
     type: VirtualDomElements.Div,
   })
   if (diagnostics && diagnostics.length > 0) {
     dom.push({
       childCount: diagnostics.length * 2,
-      className: MergeClassNames.mergeClassNames(ClassNames.HoverDisplayString, ClassNames.HoverProblem),
+      className: problemClassName,
       type: VirtualDomElements.Div,
     })
     for (const diagnostic of diagnostics) {
