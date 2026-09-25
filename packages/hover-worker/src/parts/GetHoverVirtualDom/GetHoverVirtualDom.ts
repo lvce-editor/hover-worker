@@ -43,7 +43,9 @@ const sash: VirtualDomNode = {
 
 const getChildCount = (lineInfos: readonly (readonly string[])[], documentation: string, diagnostics: readonly Diagnostic[]): number => {
   const diagnosticsCount = diagnostics && diagnostics.length > 0 ? 1 : 0
-  return lineInfos.length + documentation ? 1 : 0 + diagnosticsCount
+  const lineInfosCount = lineInfos.length > 0 ? 1 : 0
+  const documentationCount = documentation ? 1 : 0
+  return lineInfosCount + documentationCount + diagnosticsCount
 }
 
 export const getHoverVirtualDom = (
@@ -51,6 +53,9 @@ export const getHoverVirtualDom = (
   documentation: string,
   diagnostics: readonly Diagnostic[],
 ): readonly VirtualDomNode[] => {
+  if (lineInfos.length === 0 && !documentation && diagnostics.length === 0) {
+    return []
+  }
   const dom: VirtualDomNode[] = []
   dom.push({
     childCount: getChildCount(lineInfos, documentation, diagnostics) + 1,

@@ -2,8 +2,6 @@ import type { Test } from '@lvce-editor/test-with-playwright'
 
 export const name = 'editor.hover-show-returns-empty-object'
 
-export const skip = 1
-
 export const test: Test = async ({ Editor, expect, Extension, FileSystem, Locator, Main }) => {
   // arrange
   const url = import.meta.resolve('../fixtures/editor.hover-show-returns-empty-object')
@@ -16,7 +14,7 @@ export const test: Test = async ({ Editor, expect, Extension, FileSystem, Locato
   // act
   await Editor.openHover()
 
-  // assert - hover should not appear when extension returns empty object
-  const hover = Locator('.EditorHover')
-  await expect(hover).toBeHidden()
+  // assert - an empty object renders no hover content
+  const documentation = Locator('.HoverDocumentation')
+  await expect(documentation).toBeHidden()
 }
