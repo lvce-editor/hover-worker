@@ -7,6 +7,12 @@ import * as MergeClassNames from '../MergeClassNames/MergeClassNames.ts'
 import * as VirtualDomElements from '../VirtualDomElements/VirtualDomElements.ts'
 import { text } from '../VirtualDomHelpers/VirtualDomHelpers.ts'
 
+interface Diagnostic {
+  readonly code: number
+  readonly message: string
+  readonly source: string
+}
+
 const hoverClassName = MergeClassNames.mergeClassNames(ClassNames.Viewlet, ClassNames.EditorHover)
 const problemClassName = MergeClassNames.mergeClassNames(ClassNames.HoverDisplayString, ClassNames.HoverProblem)
 
@@ -35,12 +41,16 @@ const sash: VirtualDomNode = {
   type: VirtualDomElements.Div,
 }
 
-const getChildCount = (lineInfos: any, documentation: any, diagnostics: any): number => {
+const getChildCount = (lineInfos: readonly (readonly string[])[], documentation: string, diagnostics: readonly Diagnostic[]): number => {
   const diagnosticsCount = diagnostics && diagnostics.length > 0 ? 1 : 0
   return lineInfos.length + documentation ? 1 : 0 + diagnosticsCount
 }
 
-export const getHoverVirtualDom = (lineInfos: any, documentation: any, diagnostics: any): readonly VirtualDomNode[] => {
+export const getHoverVirtualDom = (
+  lineInfos: readonly (readonly string[])[],
+  documentation: string,
+  diagnostics: readonly Diagnostic[],
+): readonly VirtualDomNode[] => {
   const dom: VirtualDomNode[] = []
   dom.push({
     childCount: getChildCount(lineInfos, documentation, diagnostics) + 1,
