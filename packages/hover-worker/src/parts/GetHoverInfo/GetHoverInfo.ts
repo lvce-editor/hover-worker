@@ -55,6 +55,9 @@ export const getEditorHoverInfo = async (
 
   const { error, hover } = await Hover.getHover(editorUid, editorLanguageId, offset)
   if (!hover) {
+    if (matchingDiagnostics.length === 0) {
+      return undefined
+    }
     return {
       documentation: '',
       lineInfos: [],
@@ -77,6 +80,10 @@ export const getEditorHoverInfo = async (
     hoverDocumentationLineHeight,
     fallbackDisplayStringLanguageId,
   )
+
+  if (!documentation && lineInfos.length === 0 && matchingDiagnostics.length === 0) {
+    return undefined
+  }
 
   return {
     documentation,

@@ -28,7 +28,10 @@ export const getHoverDetails = async (
     }
   }
 
-  const { displayString, displayStringLanguageId, documentation } = hover
+  const displayString = typeof hover.displayString === 'string' ? hover.displayString : ''
+  const hoverText = typeof hover.text === 'string' && hover.text.trim() ? hover.text : ''
+  const documentation = typeof hover.documentation === 'string' && hover.documentation.trim() ? hover.documentation : hoverText
+  const displayStringLanguageId = typeof hover.displayStringLanguageId === 'string' ? hover.displayStringLanguageId : ''
 
   const hoverDocumentationWidth = hoverFullWidth - hoverPaddingLeft - hoverPaddingRight - hoverBorderLeft - hoverBorderRight
 

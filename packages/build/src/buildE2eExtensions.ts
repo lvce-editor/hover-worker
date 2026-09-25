@@ -3,11 +3,27 @@ import { join } from 'node:path'
 import { root } from './root.ts'
 
 const extensionNames = [
+  'editor.diagnostic-hover-show',
+  'editor.hover-show',
+  'editor.hover-show-empty-strings',
+  'editor.hover-show-error-thrown',
+  'editor.hover-show-extra-properties',
   'editor.hover-show-long-text',
+  'editor.hover-show-mixed-providers',
   'editor.hover-show-multiple-providers-1',
   'editor.hover-show-multiple-providers-2',
+  'editor.hover-show-only-documentation',
+  'editor.hover-show-only-text',
+  'editor.hover-show-promise-rejection',
+  'editor.hover-show-returns-array',
+  'editor.hover-show-returns-empty-object',
+  'editor.hover-show-returns-null',
+  'editor.hover-show-returns-number',
+  'editor.hover-show-returns-string',
+  'editor.hover-show-returns-undefined',
   'editor.hover-show-special-characters',
   'editor.hover-show-whitespace-only',
+  'editor.hover-show-wrong-property-types',
 ] as const
 
 const buildE2eExtension = async (extensionName: string): Promise<void> => {

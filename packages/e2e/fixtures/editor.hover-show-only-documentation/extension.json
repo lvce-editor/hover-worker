@@ -3,11 +3,18 @@
   "name": "Hover Only Documentation",
   "description": "Test extension that returns only documentation field",
   "activation": ["onLanguage:xyz", "onHover:xyz"],
-  "browser": "main.js",
+  "browser": "dist/main.js",
   "languages": [
     {
       "id": "xyz",
       "extensions": [".xyz"]
+    }
+  ],
+  "isolated": true,
+  "hoverProviders": [
+    {
+      "id": "editor-hover-show-only-documentation",
+      "languageId": "xyz"
     }
   ]
 }

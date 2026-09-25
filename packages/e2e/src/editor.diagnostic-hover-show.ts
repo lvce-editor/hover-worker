@@ -2,8 +2,6 @@ import type { Test } from '@lvce-editor/test-with-playwright'
 
 export const name = 'editor.diagnostic-hover-show'
 
-export const skip = 1
-
 export const test: Test = async ({ Editor, expect, Extension, FileSystem, Locator, Main }) => {
   // arrange
   const url = import.meta.resolve('../fixtures/editor.diagnostic-hover-show')
@@ -26,5 +24,5 @@ export const test: Test = async ({ Editor, expect, Extension, FileSystem, Locato
   await expect(problemMessage).toHaveText('error')
   const problemDetail = Locator('.HoverProblemDetail')
   await expect(problemDetail).toBeVisible()
-  await expect(problemDetail).toHaveText('undefined (undefined)') // TODO
+  await expect(problemDetail).toHaveText('hover-test (E001)')
 }

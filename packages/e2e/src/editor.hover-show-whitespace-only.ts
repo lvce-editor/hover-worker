@@ -14,7 +14,7 @@ export const test: Test = async ({ Editor, expect, Extension, FileSystem, Locato
   // act
   await Editor.openHover()
 
-  // assert - behavior depends on implementation
-  const hover = Locator('.EditorHover')
-  await expect(hover).toBeVisible()
+  // assert - whitespace-only results render no hover content
+  const documentation = Locator('.HoverDocumentation')
+  await expect(documentation).toBeHidden()
 }

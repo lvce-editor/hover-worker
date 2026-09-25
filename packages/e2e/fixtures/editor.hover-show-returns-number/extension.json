@@ -3,11 +3,18 @@
   "name": "Hover Returns Number",
   "description": "Test extension that returns number instead of object",
   "activation": ["onLanguage:xyz", "onHover:xyz"],
-  "browser": "main.js",
+  "browser": "dist/main.js",
   "languages": [
     {
       "id": "xyz",
       "extensions": [".xyz"]
+    }
+  ],
+  "isolated": true,
+  "hoverProviders": [
+    {
+      "id": "editor-hover-show-returns-number",
+      "languageId": "xyz"
     }
   ]
 }
