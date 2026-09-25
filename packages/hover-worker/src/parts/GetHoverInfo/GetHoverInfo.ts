@@ -6,8 +6,16 @@ import { getOffsetAtCursor } from '../GetOffsetAtCursor/GetOffsetAtCursor.ts'
 import { getPositionAtCursor } from '../GetPositionAtCursor/GetPositionAtCursor.ts'
 import * as Hover from '../Hover/Hover.ts'
 
-const getMatchingDiagnostics = (diagnostics: any, rowIndex: number, columnIndex: number) => {
-  const matching: any[] = []
+interface Diagnostic {
+  readonly rowIndex: number
+}
+
+const getMatchingDiagnostics = <TDiagnostic extends Diagnostic>(
+  diagnostics: readonly TDiagnostic[],
+  rowIndex: number,
+  columnIndex: number,
+): TDiagnostic[] => {
+  const matching: TDiagnostic[] = []
   for (const diagnostic of diagnostics) {
     if (diagnostic.rowIndex === rowIndex) {
       matching.push(diagnostic)
