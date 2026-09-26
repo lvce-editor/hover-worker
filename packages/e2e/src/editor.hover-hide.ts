@@ -2,9 +2,7 @@ import type { Test } from '@lvce-editor/test-with-playwright'
 
 export const name = 'editor.hover-hide'
 
-export const skip = 1
-
-export const test: Test = async ({ Command, Editor, expect, Extension, FileSystem, Locator, Main }) => {
+export const test: Test = async ({ Editor, expect, Extension, FileSystem, Locator, Main }) => {
   // arrange
   const url = import.meta.resolve('../fixtures/editor.hover-show')
   await Extension.addWebExtension(url)
@@ -15,7 +13,8 @@ export const test: Test = async ({ Command, Editor, expect, Extension, FileSyste
   await Editor.openHover()
 
   // act
-  await Command.execute(`EditorHover.close`)
+  await FileSystem.writeFile(`${tmpDir}/src/other.txt`, 'another file')
+  await Main.openUri(`${tmpDir}/src/other.txt`)
 
   // assert
   const hover = Locator('.EditorHover')

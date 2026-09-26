@@ -2,8 +2,6 @@ import type { Test } from '@lvce-editor/test-with-playwright'
 
 export const name = 'editor.hover-show-only-text'
 
-export const skip = 1
-
 export const test: Test = async ({ Editor, expect, Extension, FileSystem, Locator, Main }) => {
   // arrange
   const url = import.meta.resolve('../fixtures/editor.hover-show-only-text')
@@ -16,9 +14,8 @@ export const test: Test = async ({ Editor, expect, Extension, FileSystem, Locato
   // act
   await Editor.openHover()
 
-  // assert - hover may or may not appear depending on if documentation is required
+  // assert - hover text and documentation are displayed
   const hover = Locator('.EditorHover')
-  // This test will reveal if documentation field is optional
   await expect(hover).toBeVisible()
   await expect(hover).toHaveText('only text field')
 }

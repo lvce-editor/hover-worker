@@ -6,7 +6,6 @@ const provider = {
   provideHover(textDocument, offset) {
     return {
       text: '   ',
-      documentation: '\n\t  \n',
     }
   },
 }

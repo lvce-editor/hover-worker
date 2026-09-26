@@ -1,4 +1,5 @@
 import type { HoverState } from '../HoverState/HoverState.ts'
+import * as Close from '../Close/Close.ts'
 import { getEditorHoverInfo } from '../GetHoverInfo/GetHoverInfo.ts'
 import * as GetPositionAtCursor from '../GetPositionAtCursor/GetPositionAtCursor.ts'
 import * as GetWordAtOffset from '../GetWordAtOffset/GetWordAtOffset.ts'
@@ -34,11 +35,12 @@ export const loadContent = async (state: HoverState): Promise<HoverState> => {
     fallbackDisplayStringLanguageId,
   )
   if (!info) {
-    return {
-      ...state,
-    }
+    return Close.close(state)
   }
   const { documentation, lineInfos, matchingDiagnostics } = info
+  if (!documentation && lineInfos.length === 0 && matchingDiagnostics.length === 0) {
+    return Close.close(state)
+  }
   return {
     ...state,
     documentation,

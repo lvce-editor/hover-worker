@@ -5,9 +5,9 @@
       "project": ["*.js"]
     },
     "packages/build": {
-      "entry": ["src/build.ts", "src/build-static.ts", "src/computeNodeModulesCacheKey.ts", "src/dev.ts"],
+      "entry": ["src/build.ts", "src/build-static.ts", "src/computeNodeModulesCacheKey.ts", "src/dev.ts", "src/measureMemory.ts"],
       "project": ["src/**/*.ts"],
-      "ignoreDependencies": ["@lvce-editor/shared-process", "esbuild"]
+      "ignoreDependencies": ["@lvce-editor/shared-process", "esbuild", "playwright"]
     },
     "packages/e2e": {
       "entry": ["src/**/*.ts", "fixtures/**/main.js"],
@@ -16,11 +16,6 @@
     "packages/hover-worker": {
       "entry": ["src/hoverWorkerMain.ts", "test/**/*.test.ts"],
       "project": ["src/**/*.ts", "test/**/*.ts"]
-    },
-    "packages/memory": {
-      "entry": ["src/measureMemory.ts"],
-      "project": ["src/**/*.ts"],
-      "ignoreDependencies": ["playwright"]
     },
     "packages/server": {
       "entry": ["src/postinstall.js"],

@@ -6,8 +6,16 @@ import { getOffsetAtCursor } from '../GetOffsetAtCursor/GetOffsetAtCursor.ts'
 import { getPositionAtCursor } from '../GetPositionAtCursor/GetPositionAtCursor.ts'
 import * as Hover from '../Hover/Hover.ts'
 
-const getMatchingDiagnostics = (diagnostics: any, rowIndex: number, columnIndex: number) => {
-  const matching: any[] = []
+interface Diagnostic {
+  readonly rowIndex: number
+}
+
+const getMatchingDiagnostics = <TDiagnostic extends Diagnostic>(
+  diagnostics: readonly TDiagnostic[],
+  rowIndex: number,
+  columnIndex: number,
+): TDiagnostic[] => {
+  const matching: TDiagnostic[] = []
   for (const diagnostic of diagnostics) {
     if (diagnostic.rowIndex === rowIndex) {
       matching.push(diagnostic)
@@ -47,6 +55,9 @@ export const getEditorHoverInfo = async (
 
   const { error, hover } = await Hover.getHover(editorUid, editorLanguageId, offset)
   if (!hover) {
+    if (matchingDiagnostics.length === 0) {
+      return undefined
+    }
     return {
       documentation: '',
       lineInfos: [],
@@ -69,6 +80,10 @@ export const getEditorHoverInfo = async (
     hoverDocumentationLineHeight,
     fallbackDisplayStringLanguageId,
   )
+
+  if (!documentation && lineInfos.length === 0 && matchingDiagnostics.length === 0) {
+    return undefined
+  }
 
   return {
     documentation,
