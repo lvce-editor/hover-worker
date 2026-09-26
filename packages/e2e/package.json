@@ -10,7 +10,7 @@
   "type": "module",
   "license": "MIT",
   "devDependencies": {
-    "@lvce-editor/api": "^8.74.0",
-    "@lvce-editor/test-with-playwright": "^22.23.0"
+    "@lvce-editor/api": "^9.35.6",
+    "@lvce-editor/test-with-playwright": "^22.38.6"
   }
 }
