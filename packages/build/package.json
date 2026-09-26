@@ -7,12 +7,17 @@
   "author": "",
   "license": "MIT",
   "description": "",
+  "scripts": {
+    "measure": "node --experimental-strip-types src/measureMemory.ts",
+    "measure:visible": "node --experimental-strip-types src/measureMemory.ts --no-headless"
+  },
   "devDependencies": {
     "@babel/preset-typescript": "^7.29.7",
     "@rollup/plugin-babel": "^7.1.0",
     "@lvce-editor/shared-process": "0.103.19",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@types/node": "^22.9.0",
+    "@lvce-editor/measure-memory": "^3.1.0",
     "esbuild": "^0.28.0",
     "execa": "^9.6.1",
     "rollup": "^4.61.0"
