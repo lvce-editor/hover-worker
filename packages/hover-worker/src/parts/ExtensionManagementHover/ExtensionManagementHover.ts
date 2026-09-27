@@ -1,4 +1,5 @@
-import { EditorWorker, ExtensionManagementWorker } from '@lvce-editor/rpc-registry'
+import { ExtensionManagementWorker } from '@lvce-editor/rpc-registry'
+import * as EditorWorker from '../EditorWorker/EditorWorker.ts'
 
 interface TextDocument {
   readonly documentId: number
