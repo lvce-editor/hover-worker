@@ -1,6 +1,6 @@
 import { expect, test } from '@jest/globals'
 import { createMockRpc } from '@lvce-editor/rpc'
-import { EditorWorker, ExtensionHost } from '@lvce-editor/rpc-registry'
+import { EditorWorker, ExtensionManagementWorker } from '@lvce-editor/rpc-registry'
 import { getEditorHoverInfo } from '../src/parts/GetHoverInfo/GetHoverInfo.ts'
 
 const args = [1, 'typescript', 400, 10, 10, 1, 1, 'Arial', 14, '1.4', 'javascript'] as const
@@ -9,17 +9,18 @@ const configureRpc = (hover: unknown, diagnostics: readonly unknown[] = []) => {
   EditorWorker.set(
     createMockRpc({
       commandMap: {
-        'ActivateByEvent.activateByEvent': () => undefined,
         'Editor.getDiagnostics': () => diagnostics,
+        'Editor.getLines2': () => ['const test = 1'],
         'Editor.getPositionAtCursor': () => ({ columnIndex: 5, rowIndex: 2 }),
+        'Editor.getUri': () => 'file:///test.ts',
         'Editor.getWordBefore2': () => 'word',
       },
     }),
   )
-  ExtensionHost.set(
+  ExtensionManagementWorker.set(
     createMockRpc({
       commandMap: {
-        'ExtensionHostHover.execute': () => hover,
+        'Extensions.executeHoverProvider': () => hover,
       },
     }),
   )
