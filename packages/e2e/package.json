@@ -3,8 +3,8 @@
   "version": "0.0.0-dev",
   "main": "index.js",
   "scripts": {
-    "e2e": "test-with-playwright --only-extension=. --test-path=.",
-    "e2e:headless": "test-with-playwright --only-extension=. --test-path=. --headless",
+    "e2e": "npm run build --prefix ../.. && npm run build:static --prefix ../.. && test-with-playwright --only-extension=. --test-path=.",
+    "e2e:headless": "npm run build --prefix ../.. && npm run build:static --prefix ../.. && test-with-playwright --only-extension=. --test-path=. --headless",
     "type-check": "tsc"
   },
   "type": "module",
