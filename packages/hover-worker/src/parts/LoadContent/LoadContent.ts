@@ -1,5 +1,6 @@
 import type { HoverState } from '../HoverState/HoverState.ts'
 import * as Close from '../Close/Close.ts'
+import * as EditorWorker from '../EditorWorker/EditorWorker.ts'
 import { getEditorHoverInfo } from '../GetHoverInfo/GetHoverInfo.ts'
 import * as GetPositionAtCursor from '../GetPositionAtCursor/GetPositionAtCursor.ts'
 import * as GetWordAtOffset from '../GetWordAtOffset/GetWordAtOffset.ts'
@@ -41,9 +42,11 @@ export const loadContent = async (state: HoverState): Promise<HoverState> => {
   if (!documentation && lineInfos.length === 0 && matchingDiagnostics.length === 0) {
     return Close.close(state)
   }
+  const documentationVirtualDom = documentation ? await EditorWorker.invoke('Markdown.getVirtualDomFromMarkdown', documentation) : []
   return {
     ...state,
     documentation,
+    documentationVirtualDom,
     leadingWord: wordAtOffset,
     lineInfos,
     matchingDiagnostics,

@@ -10,6 +10,7 @@ test('diff returns no changes for equal hover state', () => {
 test('diff reports changes to rendered state', () => {
   const state = createDefaultState()
   expect(diff(state, { ...state, leadingWord: 'word' })).not.toEqual([])
+  expect(diff(state, { ...state, documentation: 'updated docs' })).not.toEqual([])
   expect(diff(state, { ...state, x: 1 })).not.toEqual([])
   expect(diff(state, { ...state, width: 1 })).not.toEqual([])
   expect(diff(state, { ...state, version: 1 })).not.toEqual([])

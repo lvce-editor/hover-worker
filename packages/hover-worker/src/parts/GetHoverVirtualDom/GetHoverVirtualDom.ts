@@ -15,6 +15,7 @@ interface Diagnostic {
 
 const hoverClassName = MergeClassNames.mergeClassNames(ClassNames.Viewlet, ClassNames.EditorHover)
 const problemClassName = MergeClassNames.mergeClassNames(ClassNames.HoverDisplayString, ClassNames.HoverProblem)
+const hoverDocumentationClassName = MergeClassNames.mergeClassNames(ClassNames.HoverDocumentation, 'Markdown')
 
 const hoverProblemMessage: VirtualDomNode = {
   childCount: 1,
@@ -28,12 +29,6 @@ const hoverProblemDetail: VirtualDomNode = {
   type: VirtualDomElements.Span,
 }
 
-const hoverDocumentation: VirtualDomNode = {
-  childCount: 1,
-  className: ClassNames.HoverDocumentation,
-  type: VirtualDomElements.Div,
-}
-
 const sash: VirtualDomNode = {
   childCount: 0,
   className: MergeClassNames.mergeClassNames('Sash', 'SashVertical', 'SashResize'),
@@ -41,24 +36,40 @@ const sash: VirtualDomNode = {
   type: VirtualDomElements.Div,
 }
 
-const getChildCount = (lineInfos: readonly (readonly string[])[], documentation: string, diagnostics: readonly Diagnostic[]): number => {
+const getChildCount = (
+  lineInfos: readonly (readonly string[])[],
+  documentationVirtualDom: readonly VirtualDomNode[],
+  diagnostics: readonly Diagnostic[],
+): number => {
   const diagnosticsCount = diagnostics && diagnostics.length > 0 ? 1 : 0
   const lineInfosCount = lineInfos.length > 0 ? 1 : 0
-  const documentationCount = documentation ? 1 : 0
+  const documentationCount = documentationVirtualDom.length > 0 ? 1 : 0
   return lineInfosCount + documentationCount + diagnosticsCount
+}
+
+const getDocumentationChildCount = (documentationVirtualDom: readonly VirtualDomNode[]): number => {
+  let stack: VirtualDomNode[] = []
+  for (let i = documentationVirtualDom.length - 1; i >= 0; i--) {
+    const node = documentationVirtualDom[i]
+    if (node.childCount > 0) {
+      stack = stack.slice(node.childCount)
+    }
+    stack.unshift(node)
+  }
+  return stack.length
 }
 
 export const getHoverVirtualDom = (
   lineInfos: readonly (readonly string[])[],
-  documentation: string,
+  documentationVirtualDom: readonly VirtualDomNode[],
   diagnostics: readonly Diagnostic[],
 ): readonly VirtualDomNode[] => {
-  if (lineInfos.length === 0 && !documentation && diagnostics.length === 0) {
+  if (lineInfos.length === 0 && documentationVirtualDom.length === 0 && diagnostics.length === 0) {
     return []
   }
   const dom: VirtualDomNode[] = []
   dom.push({
-    childCount: getChildCount(lineInfos, documentation, diagnostics) + 1,
+    childCount: getChildCount(lineInfos, documentationVirtualDom, diagnostics) + 1,
     className: hoverClassName,
     type: VirtualDomElements.Div,
   })
@@ -85,8 +96,15 @@ export const getHoverVirtualDom = (
     )
   }
 
-  if (documentation) {
-    dom.push(hoverDocumentation, text(documentation))
+  if (documentationVirtualDom.length > 0) {
+    dom.push(
+      {
+        childCount: getDocumentationChildCount(documentationVirtualDom),
+        className: hoverDocumentationClassName,
+        type: VirtualDomElements.Div,
+      },
+      ...documentationVirtualDom,
+    )
   }
 
   dom.push(sash)

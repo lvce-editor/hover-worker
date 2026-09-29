@@ -1,0 +1,9 @@
+{
+  "id": "test.hover-markdown",
+  "name": "Hover Markdown Test",
+  "version": "1.0.0",
+  "publisher": "test",
+  "engines": {
+    "vscode": "*"
+  }
+}
