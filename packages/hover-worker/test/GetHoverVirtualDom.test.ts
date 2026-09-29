@@ -38,3 +38,18 @@ test('getHoverVirtualDom wraps nested Markdown virtual DOM with the correct chil
   expect(documentationWrapper.childCount).toBe(2)
   expect(dom[2]).toBe(documentation[0])
 })
+
+test('getHoverVirtualDom counts diagnostics, signature, and documentation together', () => {
+  const diagnostics = [{ code: 1, message: 'Unexpected console statement', source: 'no-console' }]
+  const documentation = [text('The value may be undefined.')]
+
+  const dom = getHoverVirtualDom([['const value: undefined']], documentation, diagnostics)
+
+  expect(dom[0].childCount).toBe(4)
+  expect(dom.map((node) => node.text).filter(Boolean)).toEqual([
+    'Unexpected console statement',
+    'no-console (1)',
+    'const value: undefined',
+    'The value may be undefined.',
+  ])
+})
