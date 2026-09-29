@@ -3,6 +3,8 @@ import { createMockRpc } from '@lvce-editor/rpc'
 import { EditorWorker, ExtensionManagementWorker } from '@lvce-editor/rpc-registry'
 import { createDefaultState } from '../src/parts/CreateDefaultState/CreateDefaultState.ts'
 import { loadContent } from '../src/parts/LoadContent/LoadContent.ts'
+import * as VirtualDomElements from '../src/parts/VirtualDomElements/VirtualDomElements.ts'
+import { text } from '../src/parts/VirtualDomHelpers/VirtualDomHelpers.ts'
 
 const configureRpc = (hover: unknown, diagnostics: readonly unknown[] = []) => {
   EditorWorker.set(
@@ -14,6 +16,7 @@ const configureRpc = (hover: unknown, diagnostics: readonly unknown[] = []) => {
         'Editor.getUri': () => 'file:///test.ts',
         'Editor.getWordAtOffset2': () => 'leading',
         'Editor.getWordBefore2': () => 'word',
+        'Markdown.getVirtualDomFromMarkdown': () => [{ childCount: 1, type: VirtualDomElements.Div }, text('rendered docs')],
       },
     }),
   )
@@ -46,6 +49,7 @@ test('loadContent applies loaded hover content to the state', async () => {
   const state = createDefaultState()
   await expect(loadContent(state)).resolves.toMatchObject({
     documentation: 'docs',
+    documentationVirtualDom: [{ childCount: 1, type: VirtualDomElements.Div }, text('rendered docs')],
     leadingWord: 'leading',
     width: 300,
     x: 12,

@@ -3,6 +3,7 @@ import type { HoverState } from '../HoverState/HoverState.ts'
 export const createDefaultState = (): HoverState => {
   return {
     documentation: '',
+    documentationVirtualDom: [],
     editorLanguageId: '',
     editorUid: 0,
     fallbackDisplayStringLanguageId: 'typescript',

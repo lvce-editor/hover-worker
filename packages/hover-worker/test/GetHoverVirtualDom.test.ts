@@ -1,11 +1,14 @@
 import { expect, test } from '@jest/globals'
 import { getHoverVirtualDom } from '../src/parts/GetHoverVirtualDom/GetHoverVirtualDom.ts'
+import * as VirtualDomElements from '../src/parts/VirtualDomElements/VirtualDomElements.ts'
+import { text } from '../src/parts/VirtualDomHelpers/VirtualDomHelpers.ts'
 
 test('getHoverVirtualDom omits empty content and renders each available section', () => {
-  expect(getHoverVirtualDom([], '', [])).toEqual([])
+  expect(getHoverVirtualDom([], [], [])).toEqual([])
 
   const diagnostics = [{ code: 7, message: 'problem', source: 'TypeScript' }]
-  const dom = getHoverVirtualDom([['const x', 'keyword']], 'documentation', diagnostics)
+  const documentation = [{ childCount: 1, type: VirtualDomElements.Div }, text('documentation')]
+  const dom = getHoverVirtualDom([['const x', 'keyword']], documentation, diagnostics)
 
   expect(dom.length).toBeGreaterThan(5)
   expect(dom.some((node) => node.text === 'problem')).toBe(true)
@@ -14,7 +17,24 @@ test('getHoverVirtualDom omits empty content and renders each available section'
 })
 
 test('getHoverVirtualDom renders diagnostics, line info, and documentation independently', () => {
-  expect(getHoverVirtualDom([], '', [{ code: 1, message: 'message', source: 'source' }])).toHaveLength(7)
-  expect(getHoverVirtualDom([['code', 'token']], '', [])).toHaveLength(6)
-  expect(getHoverVirtualDom([], 'docs', [])).toHaveLength(4)
+  expect(getHoverVirtualDom([], [], [{ code: 1, message: 'message', source: 'source' }])).toHaveLength(7)
+  expect(getHoverVirtualDom([['code', 'token']], [], [])).toHaveLength(6)
+  expect(getHoverVirtualDom([], [text('docs')], [])).toHaveLength(4)
+})
+
+test('getHoverVirtualDom wraps nested Markdown virtual DOM with the correct child count', () => {
+  const documentation = [
+    { childCount: 1, type: VirtualDomElements.Div },
+    { childCount: 1, type: VirtualDomElements.Div },
+    text('link'),
+    { childCount: 1, type: VirtualDomElements.Div },
+    { childCount: 1, type: VirtualDomElements.Div },
+    text('code'),
+  ]
+
+  const dom = getHoverVirtualDom([], documentation, [])
+  const documentationWrapper = dom[1]
+
+  expect(documentationWrapper.childCount).toBe(2)
+  expect(dom[2]).toBe(documentation[0])
 })
