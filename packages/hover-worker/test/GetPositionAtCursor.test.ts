@@ -1,43 +1,20 @@
-import { test, expect, beforeEach, jest } from '@jest/globals'
-import { MockRpc } from '@lvce-editor/rpc'
+import { expect, jest, test } from '@jest/globals'
+import { createMockRpc } from '@lvce-editor/rpc'
 import { EditorWorker } from '@lvce-editor/rpc-registry'
 import { getPositionAtCursor } from '../src/parts/GetPositionAtCursor/GetPositionAtCursor.ts'
 
-let mockInvoke: any
+test('getPositionAtCursor returns the editor position', async () => {
+  const getPosition = jest.fn(() => ({ columnIndex: 5, rowIndex: 10, x: 100, y: 200 }))
+  EditorWorker.set(createMockRpc({ commandMap: { 'Editor.getPositionAtCursor': getPosition } }))
 
-beforeEach(() => {
-  mockInvoke = jest.fn(() => Promise.resolve({ columnIndex: 5, rowIndex: 10, x: 100, y: 200 }))
-  
-  const mockRpc = MockRpc.create({
-    commandMap: {},
-    invoke: mockInvoke,
-  })
-  EditorWorker.set(mockRpc)
+  await expect(getPositionAtCursor(123)).resolves.toEqual({ columnIndex: 5, rowIndex: 10, x: 100, y: 200 })
+  expect(getPosition).toHaveBeenCalledWith(123)
 })
 
-test('getPositionAtCursor should return position from editor worker', async () => {
-  const result = await getPositionAtCursor(123)
-  
-  expect(result).toEqual({ columnIndex: 5, rowIndex: 10, x: 100, y: 200 })
-  expect(mockInvoke).toHaveBeenCalledWith('Editor.getPositionAtCursor', 123)
-})
+test('getPositionAtCursor passes the requested editor UID', async () => {
+  const getPosition = jest.fn((editorUid: number) => ({ columnIndex: editorUid, rowIndex: 0, x: editorUid, y: 0 }))
+  EditorWorker.set(createMockRpc({ commandMap: { 'Editor.getPositionAtCursor': getPosition } }))
 
-test('getPositionAtCursor should handle different editor UIDs', async () => {
-  mockInvoke.mockImplementation((method: string, uid: number) => {
-    if (uid === 456) {
-      return Promise.resolve({ columnIndex: 3, rowIndex: 7, x: 50, y: 150 })
-    }
-    if (uid === 789) {
-      return Promise.resolve({ columnIndex: 8, rowIndex: 12, x: 200, y: 300 })
-    }
-    return Promise.resolve({ columnIndex: 5, rowIndex: 10, x: 100, y: 200 })
-  })
-  
-  const result1 = await getPositionAtCursor(456)
-  const result2 = await getPositionAtCursor(789)
-  
-  expect(result1).toEqual({ columnIndex: 3, rowIndex: 7, x: 50, y: 150 })
-  expect(result2).toEqual({ columnIndex: 8, rowIndex: 12, x: 200, y: 300 })
-  expect(mockInvoke).toHaveBeenCalledWith('Editor.getPositionAtCursor', 456)
-  expect(mockInvoke).toHaveBeenCalledWith('Editor.getPositionAtCursor', 789)
+  await expect(getPositionAtCursor(456)).resolves.toEqual({ columnIndex: 456, rowIndex: 0, x: 456, y: 0 })
+  expect(getPosition).toHaveBeenCalledWith(456)
 })

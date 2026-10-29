@@ -1,6 +1,6 @@
 import { beforeEach, expect, test } from '@jest/globals'
-import * as DiffType from '../src/parts/DiffType/DiffType.ts'
 import { createDefaultState } from '../src/parts/CreateDefaultState/CreateDefaultState.ts'
+import * as DiffType from '../src/parts/DiffType/DiffType.ts'
 import * as HoverStates from '../src/parts/HoverStates/HoverStates.ts'
 import { render2 } from '../src/parts/Render2/Render2.ts'
 
@@ -15,7 +15,7 @@ test('render2 applies the requested renderer to the latest state', () => {
   HoverStates.set(123, oldState, newState)
 
   expect(render2(123, [DiffType.RenderItems])).toEqual([['Viewlet.setDom2', 123, []]])
-  expect(HoverStates.get(123)).toMatchObject({ oldState: newState, newState })
+  expect(HoverStates.get(123)).toMatchObject({ newState, oldState: newState })
 })
 
 test('render2 keeps state for independent widget identifiers', () => {
@@ -25,5 +25,5 @@ test('render2 keeps state for independent widget identifiers', () => {
   HoverStates.set(456, secondState, secondState)
 
   expect(render2(456, [DiffType.RenderItems])).toEqual([['Viewlet.setDom2', 456, []]])
-  expect(HoverStates.get(123)).toMatchObject({ oldState: firstState, newState: firstState })
+  expect(HoverStates.get(123)).toMatchObject({ newState: firstState, oldState: firstState })
 })
