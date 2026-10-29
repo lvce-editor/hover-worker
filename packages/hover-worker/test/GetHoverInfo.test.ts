@@ -5,7 +5,7 @@ import { getEditorHoverInfo } from '../src/parts/GetHoverInfo/GetHoverInfo.ts'
 
 const args = [1, 'typescript', 400, 10, 10, 1, 1, 'Arial', 14, '1.4', 'javascript'] as const
 
-const configureRpc = (hover: unknown, diagnostics: readonly unknown[] = []) => {
+const configureRpc = (hover: unknown, diagnostics: readonly unknown[] = []): void => {
   EditorWorker.set(
     createMockRpc({
       commandMap: {

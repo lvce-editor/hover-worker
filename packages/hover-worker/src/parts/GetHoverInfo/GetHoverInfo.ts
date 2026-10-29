@@ -10,6 +10,14 @@ interface Diagnostic {
   readonly rowIndex: number
 }
 
+interface EditorHoverInfo {
+  readonly documentation: string
+  readonly lineInfos: Awaited<ReturnType<typeof getHoverDetails>>['lineInfos']
+  readonly matchingDiagnostics: Diagnostic[]
+  readonly x: number
+  readonly y: number
+}
+
 const getMatchingDiagnostics = <TDiagnostic extends Diagnostic>(
   diagnostics: readonly TDiagnostic[],
   rowIndex: number,
@@ -36,7 +44,7 @@ export const getEditorHoverInfo = async (
   hoverDocumentationFontSize: number,
   hoverDocumentationLineHeight: string,
   fallbackDisplayStringLanguageId: string,
-) => {
+): Promise<EditorHoverInfo | undefined> => {
   Assert.number(editorUid)
   const { columnIndex, rowIndex } = await getPositionAtCursor(editorUid)
   const offset = getOffsetAtCursor(editorUid)
@@ -51,7 +59,7 @@ export const getEditorHoverInfo = async (
   const editor = {}
   const { x, y } = getHoverPositionXy(editor, rowIndex, wordStart)
   // @ts-ignore
-  const matchingDiagnostics = getMatchingDiagnostics(diagnostics, rowIndex, columnIndex)
+  const matchingDiagnostics = getMatchingDiagnostics<Diagnostic>(diagnostics, rowIndex, columnIndex)
 
   const { error, hover } = await Hover.getHover(editorUid, editorLanguageId, offset)
   if (!hover) {
