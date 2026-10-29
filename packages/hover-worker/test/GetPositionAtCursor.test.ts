@@ -4,7 +4,7 @@ import { EditorWorker } from '@lvce-editor/rpc-registry'
 import { getPositionAtCursor } from '../src/parts/GetPositionAtCursor/GetPositionAtCursor.ts'
 
 test('getPositionAtCursor returns the editor position', async () => {
-  const getPosition = jest.fn(() => ({ columnIndex: 5, rowIndex: 10, x: 100, y: 200 }))
+  const getPosition = jest.fn((_editorUid: number) => ({ columnIndex: 5, rowIndex: 10, x: 100, y: 200 }))
   EditorWorker.set(createMockRpc({ commandMap: { 'Editor.getPositionAtCursor': getPosition } }))
 
   await expect(getPositionAtCursor(123)).resolves.toEqual({ columnIndex: 5, rowIndex: 10, x: 100, y: 200 })
