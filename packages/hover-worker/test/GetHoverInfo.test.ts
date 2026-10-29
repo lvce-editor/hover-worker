@@ -1,64 +1,54 @@
-import { test, expect } from '@jest/globals'
-import { EditorWorker } from '@lvce-editor/rpc-registry'
+import { expect, test } from '@jest/globals'
+import { createMockRpc } from '@lvce-editor/rpc'
+import { EditorWorker, ExtensionManagementWorker } from '@lvce-editor/rpc-registry'
 import { getEditorHoverInfo } from '../src/parts/GetHoverInfo/GetHoverInfo.ts'
 
-test('getEditorHoverInfo should return hover info structure', async () => {
-  EditorWorker.registerMockRpc({
-    'Editor.getPositionAtCursor': () => Promise.resolve({ columnIndex: 5, rowIndex: 10, x: 100, y: 200 }),
-    'Editor.getDiagnostics': () => Promise.resolve([]),
-    'Editor.getWordBefore': () => Promise.resolve('const'),
-  })
-  
-  const result = await getEditorHoverInfo(
-    123,
-    'typescript',
-    400,
-    10,
-    10,
-    1,
-    1,
-    'Arial',
-    14,
-    '1.4',
-    'javascript'
+const args = [1, 'typescript', 400, 10, 10, 1, 1, 'Arial', 14, '1.4', 'javascript'] as const
+
+const configureRpc = (hover: unknown, diagnostics: readonly unknown[] = []) => {
+  EditorWorker.set(
+    createMockRpc({
+      commandMap: {
+        'Editor.getDiagnostics': () => diagnostics,
+        'Editor.getLines2': () => ['const test = 1'],
+        'Editor.getPositionAtCursor': () => ({ columnIndex: 5, rowIndex: 2 }),
+        'Editor.getUri': () => 'file:///test.ts',
+        'Editor.getWordBefore2': () => 'word',
+      },
+    }),
   )
-  
-  expect(result).toHaveProperty('documentation')
-  expect(result).toHaveProperty('lineInfos')
-  expect(result).toHaveProperty('matchingDiagnostics')
-  expect(result).toHaveProperty('x')
-  expect(result).toHaveProperty('y')
-  expect(typeof result.documentation).toBe('string')
-  expect(Array.isArray(result.lineInfos)).toBe(true)
-  expect(Array.isArray(result.matchingDiagnostics)).toBe(true)
-  expect(typeof result.x).toBe('number')
-  expect(typeof result.y).toBe('number')
+  ExtensionManagementWorker.set(
+    createMockRpc({
+      commandMap: {
+        'Extensions.executeHoverProvider': () => hover,
+      },
+    }),
+  )
+}
+
+test('getEditorHoverInfo filters diagnostics and returns matching diagnostics when no hover exists', async () => {
+  const diagnostics = [
+    { code: 1, rowIndex: 2 },
+    { code: 2, rowIndex: 3 },
+  ]
+  configureRpc(undefined, diagnostics)
+  const result = await getEditorHoverInfo(...args)
+  expect(result?.matchingDiagnostics).toEqual([diagnostics[0]])
 })
 
-test('getEditorHoverInfo should handle different parameters', async () => {
-  EditorWorker.registerMockRpc({
-    'Editor.getPositionAtCursor': () => Promise.resolve({ columnIndex: 3, rowIndex: 7, x: 50, y: 150 }),
-    'Editor.getDiagnostics': () => Promise.resolve([]),
-    'Editor.getWordBefore': () => Promise.resolve('test'),
-  })
-  
-  const result1 = await getEditorHoverInfo(
-    456,
-    'javascript',
-    800,
-    20,
-    20,
-    2,
-    2,
-    'Monaco',
-    16,
-    '1.5',
-    'typescript'
-  )
-  
-  expect(result1).toHaveProperty('documentation')
-  expect(result1).toHaveProperty('lineInfos')
-  expect(result1).toHaveProperty('matchingDiagnostics')
-  expect(result1).toHaveProperty('x')
-  expect(result1).toHaveProperty('y')
+test('getEditorHoverInfo returns undefined when neither hover nor matching diagnostic exists', async () => {
+  configureRpc(undefined, [{ code: 2, rowIndex: 3 }])
+  await expect(getEditorHoverInfo(...args)).resolves.toBeUndefined()
+})
+
+test('getEditorHoverInfo returns hover documentation and matching diagnostics', async () => {
+  configureRpc({ displayString: '', documentation: 'documentation' }, [{ code: 1, rowIndex: 2 }])
+  const result = await getEditorHoverInfo(...args)
+  expect(result?.documentation).toBe('documentation')
+  expect(result?.matchingDiagnostics).toHaveLength(1)
+})
+
+test('getEditorHoverInfo omits empty hover details when no diagnostics match', async () => {
+  configureRpc({})
+  await expect(getEditorHoverInfo(...args)).resolves.toBeUndefined()
 })

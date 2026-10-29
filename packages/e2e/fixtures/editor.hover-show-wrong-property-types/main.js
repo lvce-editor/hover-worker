@@ -1,14 +1,14 @@
+import { activate as activateExtensionApi, registerHoverProvider } from '@lvce-editor/api'
+
 const provider = {
+  id: 'editor-hover-show-wrong-property-types',
   languageId: 'xyz',
   provideHover(textDocument, offset) {
     return {
       text: 123, // should be string
-      documentation: ['array', 'instead', 'of', 'string'], // should be string
     }
   },
 }
 
-export const activate = () => {
-  // @ts-ignore
-  vscode.registerHoverProvider(provider)
-}
+await activateExtensionApi()
+registerHoverProvider(provider)

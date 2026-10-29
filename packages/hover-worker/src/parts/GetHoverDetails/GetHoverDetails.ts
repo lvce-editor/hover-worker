@@ -1,15 +1,22 @@
 import * as MeasureTextHeight from '../MeasureTextHeight/MeasureTextHeight.ts'
 import * as TokenizeCodeBlock from '../TokenizeCodeBlock/TokenizeCodeBlock.ts'
 
+interface Hover {
+  readonly displayString?: unknown
+  readonly displayStringLanguageId?: unknown
+  readonly documentation?: unknown
+  readonly text?: unknown
+}
+
 interface HoverDetails {
   readonly documentation: string
   readonly documentationHeight: number
-  readonly lineInfos: readonly any[]
+  readonly lineInfos: Awaited<ReturnType<typeof TokenizeCodeBlock.tokenizeCodeBlock>>
 }
 
 export const getHoverDetails = async (
-  hover: any,
-  error: any,
+  hover: Hover,
+  error: unknown,
   hoverFullWidth: number,
   hoverPaddingLeft: number,
   hoverPaddingRight: number,
@@ -28,7 +35,10 @@ export const getHoverDetails = async (
     }
   }
 
-  const { displayString, displayStringLanguageId, documentation } = hover
+  const displayString = typeof hover.displayString === 'string' ? hover.displayString : ''
+  const hoverText = typeof hover.text === 'string' && hover.text.trim() ? hover.text : ''
+  const documentation = typeof hover.documentation === 'string' && hover.documentation.trim() ? hover.documentation : hoverText
+  const displayStringLanguageId = typeof hover.displayStringLanguageId === 'string' ? hover.displayStringLanguageId : ''
 
   const hoverDocumentationWidth = hoverFullWidth - hoverPaddingLeft - hoverPaddingRight - hoverBorderLeft - hoverBorderRight
 

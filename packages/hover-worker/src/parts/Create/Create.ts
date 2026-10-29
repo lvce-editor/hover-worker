@@ -4,6 +4,7 @@ import * as FindWidgetStates from '../HoverStates/HoverStates.ts'
 export const create = (uid: number, x: number, y: number, width: number, height: number, editorUid: number, editorLanguageId: string): void => {
   const state: HoverState = {
     documentation: '',
+    documentationVirtualDom: [],
     editorLanguageId,
     editorUid,
     fallbackDisplayStringLanguageId: 'typescript',

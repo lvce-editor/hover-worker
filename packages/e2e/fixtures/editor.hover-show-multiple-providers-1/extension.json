@@ -3,7 +3,14 @@
   "name": "Hover Multiple Provider 1",
   "description": "Test first extension providing hover",
   "activation": ["onLanguage:xyz", "onHover:xyz"],
-  "browser": "main.js",
+  "browser": "dist/main.js",
+  "isolated": true,
+  "hoverProviders": [
+    {
+      "id": "hover-multiple-1",
+      "languageId": "xyz"
+    }
+  ],
   "languages": [
     {
       "id": "xyz",

@@ -2,11 +2,9 @@ import type { Test } from '@lvce-editor/test-with-playwright'
 
 export const name = 'editor.hover-show-wrong-property-types'
 
-export const skip = 1
-
 export const test: Test = async ({ Editor, expect, Extension, FileSystem, Locator, Main }) => {
   // arrange
-  const url = new URL('../fixtures/editor.hover-show-wrong-property-types', import.meta.url).toString()
+  const url = import.meta.resolve('../fixtures/editor.hover-show-wrong-property-types')
   await Extension.addWebExtension(url)
   const tmpDir = await FileSystem.getTmpDir()
   await FileSystem.writeFile(`${tmpDir}/src/test.xyz`, 'globalThis.AbortSignal.abort()')
@@ -16,7 +14,7 @@ export const test: Test = async ({ Editor, expect, Extension, FileSystem, Locato
   // act
   await Editor.openHover()
 
-  // assert - hover should not appear when extension returns wrong property types
-  const hover = Locator('.EditorHover')
-  await expect(hover).toBeHidden()
+  // assert - invalid property types render no hover content
+  const documentation = Locator('.HoverDocumentation')
+  await expect(documentation).toBeHidden()
 }

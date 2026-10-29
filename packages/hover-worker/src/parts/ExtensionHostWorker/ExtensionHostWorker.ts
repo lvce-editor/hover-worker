@@ -1,3 +1,3 @@
 import { ExtensionHost } from '@lvce-editor/rpc-registry'
 
-export const { invoke, set } = ExtensionHost
+export const set = (...args: Parameters<typeof ExtensionHost.set>) => ExtensionHost.set(...args)

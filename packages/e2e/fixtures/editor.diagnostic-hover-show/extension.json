@@ -3,11 +3,18 @@
   "name": "Hover Show Open",
   "description": "Test Empty",
   "activation": ["onLanguage:xyz", "onDiagnostic:xyz"],
-  "browser": "main.js",
+  "browser": "dist/main.js",
   "languages": [
     {
       "id": "xyz",
       "extensions": [".xyz"]
+    }
+  ],
+  "isolated": true,
+  "diagnosticProviders": [
+    {
+      "id": "editor-diagnostic-hover-show",
+      "languageId": "xyz"
     }
   ]
 }

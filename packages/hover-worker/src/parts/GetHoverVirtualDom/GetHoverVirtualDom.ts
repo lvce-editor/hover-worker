@@ -3,8 +3,19 @@ import type { VirtualDomNode } from '../VirtualDomNode/VirtualDomNode.ts'
 import * as ClassNames from '../ClassNames/ClassNames.ts'
 import * as DomEventListenerFunctions from '../DomEventListenerFunctions/DomEventListenerFunctions.ts'
 import * as GetLineInfosVirtualDom from '../GetLineInfosVirtualDom/GetLineInfosVirtualDom.ts'
+import * as MergeClassNames from '../MergeClassNames/MergeClassNames.ts'
 import * as VirtualDomElements from '../VirtualDomElements/VirtualDomElements.ts'
 import { text } from '../VirtualDomHelpers/VirtualDomHelpers.ts'
+
+interface Diagnostic {
+  readonly code: number
+  readonly message: string
+  readonly source: string
+}
+
+const hoverClassName = MergeClassNames.mergeClassNames(ClassNames.Viewlet, ClassNames.EditorHover)
+const problemClassName = MergeClassNames.mergeClassNames(ClassNames.HoverDisplayString, ClassNames.HoverProblem)
+const hoverDocumentationClassName = MergeClassNames.mergeClassNames(ClassNames.HoverDocumentation, 'Markdown')
 
 const hoverProblemMessage: VirtualDomNode = {
   childCount: 1,
@@ -18,22 +29,54 @@ const hoverProblemDetail: VirtualDomNode = {
   type: VirtualDomElements.Span,
 }
 
-const getChildCount = (lineInfos: any, documentation: any, diagnostics: any): number => {
-  const diagnosticsCount = diagnostics && diagnostics.length > 0 ? 1 : 0
-  return lineInfos.length + documentation ? 1 : 0 + diagnosticsCount
+const sash: VirtualDomNode = {
+  childCount: 0,
+  className: MergeClassNames.mergeClassNames('Sash', 'SashVertical', 'SashResize'),
+  onPointerDown: DomEventListenerFunctions.HandleSashPointerDown,
+  type: VirtualDomElements.Div,
 }
 
-export const getHoverVirtualDom = (lineInfos: any, documentation: any, diagnostics: any): readonly VirtualDomNode[] => {
+const getChildCount = (
+  lineInfos: readonly (readonly string[])[],
+  documentationVirtualDom: readonly VirtualDomNode[],
+  diagnostics: readonly Diagnostic[],
+): number => {
+  const diagnosticsCount = diagnostics && diagnostics.length > 0 ? 1 : 0
+  const lineInfosCount = lineInfos.length > 0 ? 1 : 0
+  const documentationCount = documentationVirtualDom.length > 0 ? 1 : 0
+  return lineInfosCount + documentationCount + diagnosticsCount
+}
+
+const getDocumentationChildCount = (documentationVirtualDom: readonly VirtualDomNode[]): number => {
+  let stack: VirtualDomNode[] = []
+  for (let i = documentationVirtualDom.length - 1; i >= 0; i--) {
+    const node = documentationVirtualDom[i]
+    if (node.childCount > 0) {
+      stack = stack.slice(node.childCount)
+    }
+    stack.unshift(node)
+  }
+  return stack.length
+}
+
+export const getHoverVirtualDom = (
+  lineInfos: readonly (readonly string[])[],
+  documentationVirtualDom: readonly VirtualDomNode[],
+  diagnostics: readonly Diagnostic[],
+): readonly VirtualDomNode[] => {
+  if (lineInfos.length === 0 && documentationVirtualDom.length === 0 && diagnostics.length === 0) {
+    return []
+  }
   const dom: VirtualDomNode[] = []
   dom.push({
-    childCount: getChildCount(lineInfos, documentation, diagnostics) + 1,
-    className: 'Viewlet EditorHover',
+    childCount: getChildCount(lineInfos, documentationVirtualDom, diagnostics) + 1,
+    className: hoverClassName,
     type: VirtualDomElements.Div,
   })
   if (diagnostics && diagnostics.length > 0) {
     dom.push({
       childCount: diagnostics.length * 2,
-      className: `${ClassNames.HoverDisplayString} ${ClassNames.HoverProblem}`,
+      className: problemClassName,
       type: VirtualDomElements.Div,
     })
     for (const diagnostic of diagnostics) {
@@ -53,23 +96,18 @@ export const getHoverVirtualDom = (lineInfos: any, documentation: any, diagnosti
     )
   }
 
-  if (documentation) {
+  if (documentationVirtualDom.length > 0) {
     dom.push(
       {
-        childCount: 1,
-        className: ClassNames.HoverDocumentation,
+        childCount: getDocumentationChildCount(documentationVirtualDom),
+        className: hoverDocumentationClassName,
         type: VirtualDomElements.Div,
       },
-      text(documentation),
+      ...documentationVirtualDom,
     )
   }
 
-  dom.push({
-    childCount: 0,
-    className: 'Sash SashVertical SashResize',
-    onPointerDown: DomEventListenerFunctions.HandleSashPointerDown,
-    type: VirtualDomElements.Div,
-  })
+  dom.push(sash)
 
   return dom
 }

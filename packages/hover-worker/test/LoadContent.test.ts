@@ -1,48 +1,75 @@
-import { test, expect } from '@jest/globals'
-import { EditorWorker } from '@lvce-editor/rpc-registry'
+import { expect, jest, test } from '@jest/globals'
+import { createMockRpc } from '@lvce-editor/rpc'
+import { EditorWorker, ExtensionManagementWorker, RendererWorker } from '@lvce-editor/rpc-registry'
+import { createDefaultState } from '../src/parts/CreateDefaultState/CreateDefaultState.ts'
 import { loadContent } from '../src/parts/LoadContent/LoadContent.ts'
+import * as VirtualDomElements from '../src/parts/VirtualDomElements/VirtualDomElements.ts'
+import { text } from '../src/parts/VirtualDomHelpers/VirtualDomHelpers.ts'
 
-test('loadContent should return state for valid input', async () => {
-  EditorWorker.registerMockRpc({
-    'Editor.getPositionAtCursor': () => Promise.resolve({ columnIndex: 5, rowIndex: 10, x: 100, y: 200 }),
-    'Editor.getDiagnostics': () => Promise.resolve([]),
-    'Editor.getWordBefore': () => Promise.resolve('const'),
-    'Editor.getWordAtOffset2': () => Promise.resolve('test'),
-  })
-  
-  const mockState = {
-    editorLanguageId: 'typescript',
-    editorUid: 123,
-    fallbackDisplayStringLanguageId: 'javascript',
-    hoverBorderLeft: 1,
-    hoverBorderRight: 1,
-    hoverDocumentationFontFamily: 'Arial',
-    hoverDocumentationFontSize: 14,
-    hoverDocumentationLineHeight: '1.4',
-    hoverFullWidth: 400,
-    hoverPaddingLeft: 10,
-    hoverPaddingRight: 10,
-  }
-  
-  const result = await loadContent(mockState as any)
-  
-  expect(result).toBeDefined()
-  expect(result).toHaveProperty('documentation')
-  expect(result).toHaveProperty('lineInfos')
-  expect(result).toHaveProperty('matchingDiagnostics')
-  expect(result).toHaveProperty('x')
-  expect(result).toHaveProperty('y')
+const configureRpc = (hover: unknown, diagnostics: readonly unknown[] = []) => {
+  RendererWorker.set(
+    createMockRpc({
+      commandMap: {
+        'Markdown.getVirtualDomFromMarkdown': () => [{ childCount: 1, type: VirtualDomElements.Div }, text('rendered docs')],
+      },
+    }),
+  )
+  EditorWorker.set(
+    createMockRpc({
+      commandMap: {
+        'Editor.getDiagnostics': () => diagnostics,
+        'Editor.getLines2': () => ['const test = 1'],
+        'Editor.getPositionAtCursor': () => ({ columnIndex: 5, rowIndex: 2, x: 12, y: 34 }),
+        'Editor.getUri': () => 'file:///test.ts',
+        'Editor.getWordAtOffset2': () => 'leading',
+        'Editor.getWordBefore2': () => 'word',
+      },
+    }),
+  )
+  ExtensionManagementWorker.set(createMockRpc({ commandMap: { 'Extensions.executeHoverProvider': () => hover } }))
+}
+
+test('loadContent closes the widget when there is no hover content', async () => {
+  const closeWidget = jest.fn()
+  RendererWorker.set(createMockRpc({ commandMap: {} }))
+  EditorWorker.set(
+    createMockRpc({
+      commandMap: {
+        'Editor.closeWidget2': closeWidget,
+        'Editor.getDiagnostics': () => [],
+        'Editor.getLines2': () => ['const test = 1'],
+        'Editor.getPositionAtCursor': () => ({ x: 12, y: 34 }),
+        'Editor.getUri': () => 'file:///test.ts',
+        'Editor.getWordAtOffset2': () => 'leading',
+        'Editor.getWordBefore2': () => 'word',
+      },
+    }),
+  )
+  ExtensionManagementWorker.set(createMockRpc({ commandMap: { 'Extensions.executeHoverProvider': () => undefined } }))
+  const state = createDefaultState()
+  await expect(loadContent(state)).resolves.toBe(state)
+  expect(closeWidget).toHaveBeenCalledTimes(1)
 })
 
-test('loadContent should handle null input', async () => {
-  EditorWorker.registerMockRpc({
-    'Editor.getPositionAtCursor': () => Promise.resolve({ columnIndex: 5, rowIndex: 10, x: 100, y: 200 }),
-    'Editor.getDiagnostics': () => Promise.resolve([]),
-    'Editor.getWordBefore': () => Promise.resolve('const'),
-    'Editor.getWordAtOffset2': () => Promise.resolve('test'),
+test('loadContent applies loaded hover content to the state', async () => {
+  configureRpc({ documentation: 'docs' })
+  const state = createDefaultState()
+  await expect(loadContent(state)).resolves.toMatchObject({
+    documentation: 'docs',
+    documentationVirtualDom: [{ childCount: 1, type: VirtualDomElements.Div }, text('rendered docs')],
+    leadingWord: 'leading',
+    width: 300,
+    x: 12,
+    y: 34,
   })
-  
-  const result = await loadContent(null as any)
-  
-  expect(result).toBeDefined()
+})
+
+test('loadContent keeps diagnostic-only hover details open', async () => {
+  configureRpc({}, [{ code: 1, message: 'problem', rowIndex: 2, source: 'TypeScript' }])
+  const state = createDefaultState()
+  await expect(loadContent(state)).resolves.toMatchObject({
+    documentation: '',
+    matchingDiagnostics: [{ code: 1, message: 'problem', rowIndex: 2, source: 'TypeScript' }],
+    width: 300,
+  })
 })

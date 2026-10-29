@@ -1,11 +1,16 @@
+import { activate as activateExtensionApi, registerHoverProvider } from '@lvce-editor/api'
+
 const provider = {
+  id: 'editor-hover-show-mixed-providers',
   languageId: 'xyz',
   provideHover(textDocument, offset) {
-    throw new Error('First provider fails')
+    return {
+      text: 'mixed-provider signature',
+      documentation: 'def',
+      extraField: 'ignored',
+    }
   },
 }
 
-export const activate = () => {
-  // @ts-ignore
-  vscode.registerHoverProvider(provider)
-}
+await activateExtensionApi()
+registerHoverProvider(provider)

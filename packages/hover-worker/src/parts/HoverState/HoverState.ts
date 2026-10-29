@@ -2,6 +2,7 @@ type LineInfo = readonly string[]
 
 export interface HoverState {
   readonly documentation: string
+  readonly documentationVirtualDom: readonly any[]
   readonly editorLanguageId: string
   readonly editorUid: number
   readonly fallbackDisplayStringLanguageId: string

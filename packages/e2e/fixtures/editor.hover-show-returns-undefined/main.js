@@ -1,11 +1,12 @@
+import { activate as activateExtensionApi, registerHoverProvider } from '@lvce-editor/api'
+
 const provider = {
+  id: 'editor-hover-show-returns-undefined',
   languageId: 'xyz',
   provideHover(textDocument, offset) {
     return undefined
   },
 }
 
-export const activate = () => {
-  // @ts-ignore
-  vscode.registerHoverProvider(provider)
-}
+await activateExtensionApi()
+registerHoverProvider(provider)
