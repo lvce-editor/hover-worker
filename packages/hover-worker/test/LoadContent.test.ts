@@ -6,7 +6,7 @@ import { loadContent } from '../src/parts/LoadContent/LoadContent.ts'
 import * as VirtualDomElements from '../src/parts/VirtualDomElements/VirtualDomElements.ts'
 import { text } from '../src/parts/VirtualDomHelpers/VirtualDomHelpers.ts'
 
-const configureRpc = (hover: unknown, diagnostics: readonly unknown[] = []) => {
+const configureRpc = (hover: unknown, diagnostics: readonly unknown[] = []): void => {
   RendererWorker.set(
     createMockRpc({
       commandMap: {

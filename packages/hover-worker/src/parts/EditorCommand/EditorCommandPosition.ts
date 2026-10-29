@@ -7,13 +7,13 @@
  * @param {number} columnIndex
  * @returns
  */
-export const x = (editor: any, rowIndex: number, columnIndex: number) => {
+export const x = (editor: any, rowIndex: number, columnIndex: number): number => {
   const { columnWidth, x } = editor
   const offsetX = columnIndex * columnWidth + x
   return offsetX
 }
 
-export const y = (editor: any, rowIndex: number) => {
+export const y = (editor: any, rowIndex: number): number => {
   const { rowHeight, y } = editor
   const offsetY = (rowIndex + 1) * rowHeight + y
   return offsetY
