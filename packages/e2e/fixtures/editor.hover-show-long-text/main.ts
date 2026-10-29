@@ -1,6 +1,6 @@
-import { activate as activateExtensionApi, registerHoverProvider } from '@lvce-editor/api'
+import { activate as activateExtensionApi, registerHoverProvider, type HoverProvider, type HoverResult } from '@lvce-editor/api'
 
-const provider = {
+const provider: HoverProvider = {
   id: 'hover-long-text',
   languageId: 'xyz',
   provideHover(textDocument, offset) {

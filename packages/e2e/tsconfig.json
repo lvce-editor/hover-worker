@@ -22,5 +22,5 @@
     "noUncheckedSideEffectImports": true,
     "composite": true
   },
-  "include": ["src", "test"]
+  "include": ["src", "test", "fixtures/**/*.ts"]
 }

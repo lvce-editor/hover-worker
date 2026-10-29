@@ -9,6 +9,7 @@ const extensionNames = [
   'editor.hover-show-error-thrown',
   'editor.hover-show-extra-properties',
   'editor.hover-show-long-text',
+  'editor.hover-show-markdown',
   'editor.hover-show-mixed-providers',
   'editor.hover-show-multiple-providers-1',
   'editor.hover-show-multiple-providers-2',
@@ -30,7 +31,7 @@ const buildE2eExtension = async (extensionName: string): Promise<void> => {
   const extensionPath = join(root, 'packages', 'e2e', 'fixtures', extensionName)
   await build({
     bundle: true,
-    entryPoints: [join(extensionPath, 'main.js')],
+    entryPoints: [join(extensionPath, 'main.ts')],
     external: ['electron', 'node:*'],
     format: 'esm',
     outfile: join(extensionPath, 'dist', 'main.js'),

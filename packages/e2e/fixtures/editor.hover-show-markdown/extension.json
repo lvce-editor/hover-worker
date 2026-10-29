@@ -1,9 +1,20 @@
 {
-  "id": "test.hover-markdown",
+  "id": "test.hover-show-markdown",
   "name": "Hover Markdown Test",
-  "version": "1.0.0",
-  "publisher": "test",
-  "engines": {
-    "vscode": "*"
-  }
+  "description": "Test hover Markdown rendering",
+  "activation": ["onLanguage:xyz", "onHover:xyz"],
+  "browser": "dist/main.js",
+  "languages": [
+    {
+      "id": "xyz",
+      "extensions": [".xyz"]
+    }
+  ],
+  "isolated": true,
+  "hoverProviders": [
+    {
+      "id": "editor-hover-show-markdown",
+      "languageId": "xyz"
+    }
+  ]
 }

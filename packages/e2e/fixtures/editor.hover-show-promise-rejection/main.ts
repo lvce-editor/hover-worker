@@ -1,6 +1,6 @@
-import { activate as activateExtensionApi, registerHoverProvider } from '@lvce-editor/api'
+import { activate as activateExtensionApi, registerHoverProvider, type HoverProvider, type HoverResult } from '@lvce-editor/api'
 
-const provider = {
+const provider: HoverProvider = {
   id: 'editor-hover-show-promise-rejection',
   languageId: 'xyz',
   async provideHover(textDocument, offset) {
