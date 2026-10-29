@@ -1,6 +1,6 @@
-import { activate as activateExtensionApi, registerDiagnosticProvider } from '@lvce-editor/api'
+import { activate as activateExtensionApi, registerDiagnosticProvider, type DiagnosticProvider } from '@lvce-editor/api'
 
-const diagnosticProvider = {
+const diagnosticProvider: DiagnosticProvider = {
   id: 'editor-diagnostic-hover-show',
   languageId: 'xyz',
   provideDiagnostics(textDocument, offset) {
