@@ -23,9 +23,10 @@ export default defineConfig([
     },
   },
   {
+    files: ['**/*.ts'],
     rules: {
       '@typescript-eslint/prefer-readonly-parameter-types': 'off',
-      '@typescript-eslint/no-floating-promises': 'off',
+      '@typescript-eslint/no-floating-promises': 'error',
     },
   },
 ])
