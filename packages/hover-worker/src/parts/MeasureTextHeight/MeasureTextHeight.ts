@@ -1,3 +1,5 @@
+import * as RendererWorker from '../RendererWorker/RendererWorker.ts'
+
 export const measureTextBlockHeight = async (
   text: string,
   fontFamily: string,
@@ -5,6 +7,5 @@ export const measureTextBlockHeight = async (
   lineHeight: number | string,
   width: number,
 ): Promise<number> => {
-  // TODO ask editor worker or renderer process
-  return 100
+  return RendererWorker.invoke('MeasureTextHeight.measureTextBlockHeight', text, fontFamily, fontSize, lineHeight, width)
 }

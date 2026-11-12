@@ -1,5 +1,6 @@
 import type { HoverState } from '../HoverState/HoverState.ts'
 import * as Close from '../Close/Close.ts'
+import * as GetDiagnosticHeight from '../GetDiagnosticHeight/GetDiagnosticHeight.ts'
 import { getEditorHoverInfo } from '../GetHoverInfo/GetHoverInfo.ts'
 import * as GetPositionAtCursor from '../GetPositionAtCursor/GetPositionAtCursor.ts'
 import * as GetWordAtOffset from '../GetWordAtOffset/GetWordAtOffset.ts'
@@ -10,6 +11,7 @@ export const loadContent = async (state: HoverState): Promise<HoverState> => {
     editorLanguageId,
     editorUid,
     fallbackDisplayStringLanguageId,
+    height: currentHeight,
     hoverBorderLeft,
     hoverBorderRight,
     hoverDocumentationFontFamily,
@@ -42,15 +44,30 @@ export const loadContent = async (state: HoverState): Promise<HoverState> => {
   if (!documentation && lineInfos.length === 0 && matchingDiagnostics.length === 0) {
     return Close.close(state)
   }
+  const width = 300
+  const height =
+    matchingDiagnostics.length > 0
+      ? Math.min(
+          300,
+          await GetDiagnosticHeight.getDiagnosticHeight(
+            matchingDiagnostics,
+            hoverDocumentationFontFamily,
+            hoverDocumentationFontSize,
+            hoverDocumentationLineHeight,
+            width - hoverBorderLeft - hoverBorderRight,
+          ),
+        )
+      : currentHeight
   const documentationVirtualDom = documentation ? await RendererWorker.invoke('Markdown.getVirtualDomFromMarkdown', documentation) : []
   return {
     ...state,
     documentation,
     documentationVirtualDom,
+    height,
     leadingWord: wordAtOffset,
     lineInfos,
     matchingDiagnostics,
-    width: 300,
+    width,
     x,
     y,
   }

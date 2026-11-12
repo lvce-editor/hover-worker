@@ -1,7 +1,13 @@
-import { expect, test } from '@jest/globals'
+import { beforeEach, expect, test } from '@jest/globals'
+import { createMockRpc } from '@lvce-editor/rpc'
+import { RendererWorker } from '@lvce-editor/rpc-registry'
 import { getHoverDetails } from '../src/parts/GetHoverDetails/GetHoverDetails.ts'
 
 const options = [400, 10, 10, 1, 1, 'Arial', 14, '1.4', 'javascript'] as const
+
+beforeEach(() => {
+  RendererWorker.set(createMockRpc({ commandMap: { 'MeasureTextHeight.measureTextBlockHeight': () => 40 } }))
+})
 
 test('getHoverDetails returns empty details for a provider error', async () => {
   await expect(getHoverDetails({}, new Error('failed'), ...options)).resolves.toEqual({
