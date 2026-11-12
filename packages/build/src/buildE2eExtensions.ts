@@ -4,6 +4,7 @@ import { root } from './root.ts'
 
 const extensionNames = [
   'editor.diagnostic-hover-show',
+  'editor.diagnostic-hover-long-text',
   'editor.hover-show',
   'editor.hover-show-empty-strings',
   'editor.hover-show-error-thrown',

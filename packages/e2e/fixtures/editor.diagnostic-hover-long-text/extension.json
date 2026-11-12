@@ -1,0 +1,20 @@
+{
+  "id": "test.diagnostic-hover-long-text",
+  "name": "Diagnostic Hover Long Text",
+  "description": "Test long diagnostic hover sizing",
+  "activation": ["onLanguage:xyz", "onDiagnostic:xyz"],
+  "browser": "dist/main.js",
+  "languages": [
+    {
+      "id": "xyz",
+      "extensions": [".xyz"]
+    }
+  ],
+  "isolated": true,
+  "diagnosticProviders": [
+    {
+      "id": "editor-diagnostic-hover-long-text",
+      "languageId": "xyz"
+    }
+  ]
+}
