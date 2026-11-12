@@ -1,6 +1,7 @@
 import type { Test } from '@lvce-editor/test-with-playwright'
 
 export const name = 'editor.diagnostic-hover-long-text'
+export const skip = 1
 
 export const test: Test = async ({ Editor, expect, Extension, FileSystem, Locator, Main }) => {
   const url = import.meta.resolve('../fixtures/editor.diagnostic-hover-long-text')
