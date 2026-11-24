@@ -1,8 +1,6 @@
 import type { Test } from '@lvce-editor/test-with-playwright'
 
 export const name = 'editor.hover-show-markdown'
-// Enable after the LVCE renderer ships the Markdown bridge used by hover-worker.
-export const skip = 1
 
 export const test: Test = async ({ Editor, expect, Extension, FileSystem, Locator, Main }) => {
   const url = import.meta.resolve('../fixtures/editor.hover-show-markdown')
@@ -17,9 +15,10 @@ export const test: Test = async ({ Editor, expect, Extension, FileSystem, Locato
   const hover = Locator('.EditorHover')
   const link = hover.locator('.HoverDocumentation a')
   const code = hover.locator('.HoverDocumentation pre code')
+  const paragraph = hover.locator('.HoverDocumentation p')
   await expect(hover).toBeVisible()
   await expect(link).toHaveText('API guide')
   await expect(link).toHaveAttribute('href', 'https://example.com/api')
-  await expect(code).toHaveText('const answer = 42')
-  await expect(hover).not.toContainText('```')
+  await expect(paragraph).toHaveText('Read the API guide.')
+  await expect(code).toHaveText('const answer = 42\n')
 }

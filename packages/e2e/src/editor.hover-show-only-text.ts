@@ -16,6 +16,7 @@ export const test: Test = async ({ Editor, expect, Extension, FileSystem, Locato
 
   // assert - hover text and documentation are displayed
   const hover = Locator('.EditorHover')
+  const documentation = hover.locator('.HoverDocumentation p')
   await expect(hover).toBeVisible()
-  await expect(hover).toHaveText('only text field')
+  await expect(documentation).toHaveText('only text field')
 }
