@@ -17,5 +17,6 @@ export const test: Test = async ({ Editor, expect, Extension, FileSystem, Locato
   // assert - hover should appear, extra properties should be ignored
   const hover = Locator('.EditorHover')
   await expect(hover).toBeVisible()
-  await expect(hover).toHaveText('valid doc')
+  // Markdown renders a newline after the paragraph. Check the whole hover for unexpected content.
+  await expect(hover).toHaveText('valid doc\n')
 }
