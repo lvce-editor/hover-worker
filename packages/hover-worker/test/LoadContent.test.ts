@@ -6,11 +6,12 @@ import { loadContent } from '../src/parts/LoadContent/LoadContent.ts'
 import * as VirtualDomElements from '../src/parts/VirtualDomElements/VirtualDomElements.ts'
 import { text } from '../src/parts/VirtualDomHelpers/VirtualDomHelpers.ts'
 
-const configureRpc = (hover: unknown, diagnostics: readonly unknown[] = []): void => {
+const configureRpc = (hover: unknown, diagnostics: readonly unknown[] = [], measuredHeight = 41): void => {
   RendererWorker.set(
     createMockRpc({
       commandMap: {
         'Markdown.getVirtualDomFromMarkdown': () => [{ childCount: 1, type: VirtualDomElements.Div }, text('rendered docs')],
+        'MeasureTextHeight.measureTextBlockHeight': () => measuredHeight,
       },
     }),
   )
@@ -69,7 +70,17 @@ test('loadContent keeps diagnostic-only hover details open', async () => {
   const state = createDefaultState()
   await expect(loadContent(state)).resolves.toMatchObject({
     documentation: '',
+    height: 43,
     matchingDiagnostics: [{ code: 1, message: 'problem', rowIndex: 2, source: 'TypeScript' }],
+    width: 300,
+  })
+})
+
+test('loadContent caps diagnostic hover height at 300 pixels', async () => {
+  configureRpc({}, [{ code: 1, message: 'problem', rowIndex: 2, source: 'TypeScript' }], 500)
+  const state = createDefaultState()
+  await expect(loadContent(state)).resolves.toMatchObject({
+    height: 300,
     width: 300,
   })
 })
